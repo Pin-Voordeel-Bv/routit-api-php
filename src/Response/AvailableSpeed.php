@@ -4,6 +4,7 @@ namespace Inserve\RoutITAPI\Response;
 
 use DateTimeImmutable;
 use DateTimeInterface;
+use Inserve\RoutITAPI\Response\Enum\NlsType;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 /**
@@ -73,53 +74,43 @@ final class AvailableSpeed
     }
 
     /**
-     * @return string|null
+     * @return NlsType|null
      */
-    public function getNlsType(): ?string
+    public function getNlsTypeEnum(): ?NlsType
     {
-        // if we already normalized to string/null, just return it
-        if ($this->nlsType === null || $this->nlsType === '') {
-            return null;
-        }
-
-        if (is_string($this->nlsType)) {
-            return $this->nlsType;
-        }
-
-        // if somehow it's still an array or something weird → treat as null
-        return null;
+        return NlsType::fromNullable($this->getNlsTypeRaw());
     }
 
     /**
-     * @param mixed $nlsType
+     * @return string|null
+     */
+    public function getNlsTypeRaw(): ?string
+    {
+        return is_string($this->nlsType) && $this->nlsType !== ''
+            ? $this->nlsType
+            : null;
+    }
+
+    /**
+     * @param mixed $value
      *
      * @return $this
      */
-    public function setNlsType(mixed $nlsType): self
+    public function setNlsType(mixed $value): self
     {
-        // Case: <NlsType p6:nil="true" ... />
-        if (is_array($nlsType)) {
-            $flat = array_change_key_case($nlsType, CASE_LOWER);
-            $nil  = $flat['@xsi:nil'] ?? $flat['@nil'] ?? $flat['nil'] ?? null;
-
-            if ($nil === 'true' || $nil === true || $nil === '1') {
-                $this->nlsType = null;
-                return $this;
-            }
-
-            // Unknown array shape → safest is null
+        // Possible shapes:
+        // - 'Nls6'
+        // - 'Nls1'
+        // - null
+        // - ''
+        // - array with nil metadata (for p6:nil="true")
+        // We only keep it if it's a non-empty string.
+        if (is_string($value) && $value !== '') {
+            $this->nlsType = $value;
+        } else {
             $this->nlsType = null;
-            return $this;
         }
 
-        // Normal string like "Nls1", "Nls6", ...
-        if (is_string($nlsType)) {
-            $this->nlsType = $nlsType;
-            return $this;
-        }
-
-        // null or anything else
-        $this->nlsType = null;
         return $this;
     }
 
