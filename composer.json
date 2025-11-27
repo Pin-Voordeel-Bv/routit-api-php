@@ -1,5 +1,5 @@
 {
-    "name": "inserve/routit-api-php",
+    "name": "pinvandaag/routit-api-php",
     "description": "A PHP wrapper for the RoutIT API",
     "license": "MIT",
     "type": "library",
@@ -30,8 +30,8 @@
     },
     "authors": [
         {
-            "name": "Inserve",
-            "email": "dev@inserve.nl"
+            "name": "PIN Vandaag B.V.",
+            "email": "development@pinvandaag.com"
         }
     ],
     "minimum-stability": "stable"
