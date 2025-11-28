@@ -99,12 +99,12 @@ final class APIClient
      *
      * @throws RoutITAPIException
      */
-    public function request(RoutITRequestInterface $request): string
+    public function request(RoutITRequestInterface $request, string $endpoint = '/realtime'): string
     {
         try {
             $apiRequest = new Request(
                 method: 'POST',
-                uri: $this->getApiUrl('/realtime'),
+                uri: $this->getApiUrl($endpoint),
                 headers: $this->getDefaultHeaders(),
                 body: $this->serializeRequest($request)
             );

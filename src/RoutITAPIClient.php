@@ -6,11 +6,17 @@ use GuzzleHttp\Client;
 use Inserve\RoutITAPI\Client\APIClient;
 use Inserve\RoutITAPI\Exception\RoutITAPIException;
 use Inserve\RoutITAPI\Request\CustomerDataRequest;
+use Inserve\RoutITAPI\Request\DeactivateCustomerRequest;
+use Inserve\RoutITAPI\Request\NewCustomerRequest;
+use Inserve\RoutITAPI\Request\ModifyCustomerRequest;
 use Inserve\RoutITAPI\Request\OrderSummaryRequest;
 use Inserve\RoutITAPI\Request\ProductPriceDetailsRequest;
 use Inserve\RoutITAPI\Request\RoutITRequestInterface;
 use Inserve\RoutITAPI\Request\ZipCodeCheckRequest;
 use Inserve\RoutITAPI\Response\CustomerDataResponse;
+use Inserve\RoutITAPI\Response\DeactivateCustomerResponse;
+use Inserve\RoutITAPI\Response\NewCustomerResponse;
+use Inserve\RoutITAPI\Response\ModifyCustomerResponse;
 use Inserve\RoutITAPI\Response\OrderSummaryResponse;
 use Inserve\RoutITAPI\Response\ProductPriceDetailsResponse;
 use Inserve\RoutITAPI\Response\ZipCodeCheckResponse;
@@ -69,7 +75,7 @@ final class RoutITAPIClient
     public function getCustomerData(?CustomerDataRequest $request = null): ?CustomerDataResponse
     {
         /** @var CustomerDataResponse|null */
-        return $this->apiCall($request ?? new CustomerDataRequest(), CustomerDataResponse::class);
+        return $this->apiCallWithEndpoint($request ?? new CustomerDataRequest(), CustomerDataResponse::class);
     }
 
     /**
@@ -78,7 +84,7 @@ final class RoutITAPIClient
     public function getOrderSummary(?OrderSummaryRequest $request = null): ?OrderSummaryResponse
     {
         /** @var OrderSummaryResponse|null */
-        return $this->apiCall($request ?? new OrderSummaryRequest(), OrderSummaryResponse::class);
+        return $this->apiCallWithEndpoint($request ?? new OrderSummaryRequest(), OrderSummaryResponse::class);
     }
 
     /**
@@ -89,7 +95,7 @@ final class RoutITAPIClient
     public function getProductPriceDetails(): ?ProductPriceDetailsResponse
     {
         /** @var ProductPriceDetailsResponse|null */
-        return $this->apiCall(new ProductPriceDetailsRequest(), ProductPriceDetailsResponse::class);
+        return $this->apiCallWithEndpoint(new ProductPriceDetailsRequest(), ProductPriceDetailsResponse::class);
     }
 
     /**
@@ -101,20 +107,60 @@ final class RoutITAPIClient
     public function zipCodeCheck(?ZipCodeCheckRequest $request = null): ?ZipCodeCheckResponse
     {
         /** @var ZipCodeCheckResponse|null */
-        return $this->apiCall($request ?? new ZipCodeCheckRequest(), ZipCodeCheckResponse::class);
+        return $this->apiCallWithEndpoint($request ?? new ZipCodeCheckRequest(), ZipCodeCheckResponse::class);
+    }
+
+    /**
+     * @param NewCustomerRequest|null $request
+     *
+     * @return NewCustomerResponse|null
+     * @throws RoutITAPIException
+     */
+    public function newCustomer(?NewCustomerRequest $request = null): ?NewCustomerResponse
+    {
+        /** @var NewCustomerResponse|null */
+        return $this->apiCallWithEndpoint($request ?? new NewCustomerRequest(), NewCustomerResponse::class, "/queued");
+    }
+
+    /**
+     * @param ModifyCustomerRequest|null $request
+     *
+     * @return ModifyCustomerResponse|null
+     * @throws RoutITAPIException
+     */
+    public function modifyCustomer(?ModifyCustomerRequest $request = null): ?ModifyCustomerResponse
+    {
+        /** @var ModifyCustomerResponse|null */
+        return $this->apiCallWithEndpoint($request ?? new ModifyCustomerRequest(), ModifyCustomerResponse::class, "/queued");
+    }
+
+    /**
+     * @param DeactivateCustomerRequest|null $request
+     *
+     * @return DeactivateCustomerResponse|null
+     * @throws RoutITAPIException
+     */
+    public function deactivateCustomer(?DeactivateCustomerRequest $request = null): ?DeactivateCustomerResponse
+    {
+        /** @var DeactivateCustomerResponse|null */
+        return $this->apiCallWithEndpoint($request ?? new DeactivateCustomerRequest(), DeactivateCustomerResponse::class, "/queued");
     }
 
     /**
      * @param RoutITRequestInterface $request
      * @param string                 $responseClass
+     * @param string                 $endpoint
      *
      * @return mixed
      *
      * @throws RoutITAPIException
      */
-    protected function apiCall(RoutITRequestInterface $request, string $responseClass): mixed
-    {
-        $response = $this->apiClient->request($request);
+    protected function apiCallWithEndpoint(
+        RoutITRequestInterface $request,
+        string $responseClass,
+        string $endpoint = '/realtime'
+    ): mixed {
+        $response = $this->apiClient->request($request, $endpoint);
 
         return $this->apiClient->deserialize($response, $responseClass);
     }
