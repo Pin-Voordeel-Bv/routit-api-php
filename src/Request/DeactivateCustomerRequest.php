@@ -13,7 +13,7 @@ final class DeactivateCustomerRequest extends AbstractRoutITRequest implements R
     private ?Header $header = null;
 
     #[SerializedName('CustomerId')]
-    private ?string $customerId = null;
+    private ?int $customerId = null;
 
     #[SerializedName('SetActive')]
     private ?bool $setActive = null;
@@ -33,12 +33,12 @@ final class DeactivateCustomerRequest extends AbstractRoutITRequest implements R
 
     // ───────────────── CustomerId ─────────────────
 
-    public function getCustomerId(): ?string
+    public function getCustomerId(): ?int
     {
         return $this->customerId;
     }
 
-    public function setCustomerId(?string $customerId): self
+    public function setCustomerId(?int $customerId): self
     {
         $this->customerId = $customerId;
         return $this;
