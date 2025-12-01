@@ -10,15 +10,15 @@ use Symfony\Component\Serializer\Attribute\SerializedName;
 final class DeactivateCustomerResponse
 {
     #[SerializedName('CustomerId')]
-    protected ?string $customerId = null;
+    protected ?int $customerId = null;
 
     #[SerializedName('IsActive')]
-    protected ?string $isActive = null;
+    protected ?bool $isActive = null;
 
     /**
      * @return string|null
      */
-    public function getCustomerId(): ?string
+    public function getCustomerId(): ?int
     {
         return $this->customerId;
     }
@@ -28,7 +28,7 @@ final class DeactivateCustomerResponse
      *
      * @return $this
      */
-    public function setCustomerId(?string $customerId): self
+    public function setCustomerId(?int $customerId): self
     {
         $this->customerId = $customerId;
 
