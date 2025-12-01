@@ -8,6 +8,7 @@ use Inserve\RoutITAPI\Exception\RoutITAPIException;
 use Inserve\RoutITAPI\Request\CustomerDataRequest;
 use Inserve\RoutITAPI\Request\DeactivateCustomerRequest;
 use Inserve\RoutITAPI\Request\NewCustomerRequest;
+use Inserve\RoutITAPI\Request\NewFiberOrderRequest;
 use Inserve\RoutITAPI\Request\ModifyCustomerRequest;
 use Inserve\RoutITAPI\Request\OrderSummaryRequest;
 use Inserve\RoutITAPI\Request\ProductPriceDetailsRequest;
@@ -16,6 +17,7 @@ use Inserve\RoutITAPI\Request\ZipCodeCheckRequest;
 use Inserve\RoutITAPI\Response\CustomerDataResponse;
 use Inserve\RoutITAPI\Response\DeactivateCustomerResponse;
 use Inserve\RoutITAPI\Response\NewCustomerResponse;
+use Inserve\RoutITAPI\Response\NewFiberOrderResponse;
 use Inserve\RoutITAPI\Response\ModifyCustomerResponse;
 use Inserve\RoutITAPI\Response\OrderSummaryResponse;
 use Inserve\RoutITAPI\Response\ProductPriceDetailsResponse;
@@ -144,6 +146,18 @@ final class RoutITAPIClient
     {
         /** @var DeactivateCustomerResponse|null */
         return $this->apiCallWithEndpoint($request ?? new DeactivateCustomerRequest(), DeactivateCustomerResponse::class, "/queued");
+    }
+
+    /**
+     * @param NewFiberOrderRequest|null $request
+     *
+     * @return NewFiberOrderResponse|null
+     * @throws RoutITAPIException
+     */
+    public function newFiberOrder(?NewFiberOrderRequest $request = null): ?NewFiberOrderResponse
+    {
+        /** @var NewFiberOrderResponse|null */
+        return $this->apiCallWithEndpoint($request ?? new NewFiberOrderRequest(), NewFiberOrderResponse::class, "/queued");
     }
 
     /**
