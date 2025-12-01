@@ -2,7 +2,7 @@
 
 namespace Inserve\RoutITAPI\Request;
 
-use Inserve\RoutITAPI\Request\DeactivateCustomerRequest\Header;
+use Inserve\RoutITAPI\Request\Header;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 final class DeactivateCustomerRequest extends AbstractRoutITRequest implements RoutITRequestInterface

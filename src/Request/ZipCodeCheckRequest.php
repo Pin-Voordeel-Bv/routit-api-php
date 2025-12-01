@@ -2,8 +2,8 @@
 
 namespace Inserve\RoutITAPI\Request;
 
-use Inserve\RoutITAPI\Request\Enum\Portfolio;
-use Inserve\RoutITAPI\Request\Enum\Supplier;
+use Inserve\RoutITAPI\Request\ZipCodeCheckRequest\Enum\Portfolio;
+use Inserve\RoutITAPI\Request\ZipCodeCheckRequest\Enum\Supplier;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 /**

@@ -1,8 +1,8 @@
 <?php
 
-namespace Inserve\RoutITAPI\Request\Enum;
+namespace Inserve\RoutITAPI\Request\CustomerDataRequest\Enum;
 
-enum CustomerDataOrderByMember: string
+enum OrderByMember: string
 {
     case Id               = 'Id';
     case Name             = 'Name';

@@ -2,7 +2,7 @@
 
 namespace Inserve\RoutITAPI\Request;
 
-use Inserve\RoutITAPI\Request\ModifyCustomerRequest\Header;
+use Inserve\RoutITAPI\Request\Header;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 final class ModifyCustomerRequest extends AbstractRoutITRequest implements RoutITRequestInterface

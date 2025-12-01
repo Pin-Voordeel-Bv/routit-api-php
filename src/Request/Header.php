@@ -1,6 +1,6 @@
 <?php
 
-namespace Inserve\RoutITAPI\Request\DeactivateCustomerRequest;
+namespace Inserve\RoutITAPI\Request;
 
 use Symfony\Component\Serializer\Attribute\SerializedName;
 

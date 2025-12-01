@@ -2,7 +2,7 @@
 
 namespace Inserve\RoutITAPI\Request;
 
-use Inserve\RoutITAPI\Request\Enum\CustomerDataOrderByMember;
+use Inserve\RoutITAPI\Request\CustomerDataRequest\Enum\OrderByMember;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 /**
@@ -299,9 +299,9 @@ final class CustomerDataRequest extends AbstractRoutITPaginatedRequest
         return $this->orderByMember;
     }
 
-    public function setOrderByMember(CustomerDataOrderByMember|string|null $orderByMember): self
+    public function setOrderByMember(OrderByMember|string|null $orderByMember): self
     {
-        if ($orderByMember instanceof CustomerDataOrderByMember) {
+        if ($orderByMember instanceof OrderByMember) {
             $this->orderByMember = $orderByMember->value;
         } else {
             $this->orderByMember = $orderByMember;

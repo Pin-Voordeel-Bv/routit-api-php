@@ -1,5 +1,5 @@
 <?php
-namespace Inserve\RoutITAPI\Request\Enum;
+namespace Inserve\RoutITAPI\Request\ZipCodeCheckRequest\Enum;
 
 enum Supplier: string
 {

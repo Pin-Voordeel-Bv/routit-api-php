@@ -4,7 +4,7 @@ namespace Inserve\RoutITAPI\Request;
 
 use Inserve\RoutITAPI\Request\NewCustomerRequest\Enum\CountryCode;
 use Inserve\RoutITAPI\Request\NewCustomerRequest\Enum\LegalStatus;;
-use Inserve\RoutITAPI\Request\NewCustomerRequest\Header;
+use Inserve\RoutITAPI\Request\Header;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 final class NewCustomerRequest extends AbstractRoutITRequest implements RoutITRequestInterface
