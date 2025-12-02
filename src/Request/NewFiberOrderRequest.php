@@ -3,7 +3,10 @@
 namespace Inserve\RoutITAPI\Request;
 
 use Inserve\RoutITAPI\Request\Header;
+use Inserve\RoutITAPI\Request\NewFiberOrderRequest\FiberAccessData;
+use Inserve\RoutITAPI\Request\NewFiberOrderRequest\FiberMigrationData;
 use Inserve\RoutITAPI\Request\NewFiberOrderRequest\NewFiberRequestData;
+use Inserve\RoutITAPI\Request\NewFiberOrderRequest\NewVlanFiberRequestData;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 final class NewFiberOrderRequest extends AbstractRoutITRequest implements RoutITRequestInterface
@@ -21,6 +24,15 @@ final class NewFiberOrderRequest extends AbstractRoutITRequest implements RoutIT
 
     #[SerializedName('FiberRequestData')]
     private ?NewFiberRequestData $fiberRequestData = null;
+
+    #[SerializedName('FirstNewVlan')]
+    private ?NewVlanFiberRequestData $firstNewVlan = null;
+
+    #[SerializedName('FiberMigrationData')]
+    private ?FiberMigrationData $fiberMigrationData = null;
+
+    #[SerializedName('FiberAccessData')]
+    private ?FiberAccessData $fiberAccessData = null;
 
     /**
      * getHeader
@@ -97,6 +109,38 @@ final class NewFiberOrderRequest extends AbstractRoutITRequest implements RoutIT
     public function setFiberRequestData(?NewFiberRequestData $fiberRequestData): self
     {
         $this->fiberRequestData = $fiberRequestData;
+        return $this;
+    }
+
+    public function getFirstNewVlan(): ?NewVlanFiberRequestData
+    {
+        return $this->firstNewVlan;
+    }
+
+    public function setFirstNewVlan(?NewVlanFiberRequestData $firstNewVlan): self
+    {
+        $this->firstNewVlan = $firstNewVlan;
+        return $this;
+    }
+    public function getFiberMigrationData(): ?FiberMigrationData
+    {
+        return $this->fiberMigrationData;
+    }
+
+    public function setFiberMigrationData(?FiberMigrationData $fiberMigrationData): self
+    {
+        $this->fiberMigrationData = $fiberMigrationData;
+        return $this;
+    }
+
+    public function getFiberAccessData(): ?FiberAccessData
+    {
+        return $this->fiberAccessData;
+    }
+
+    public function setFiberAccessData(?FiberAccessData $fiberAccessData): self
+    {
+        $this->fiberAccessData = $fiberAccessData;
         return $this;
     }
 }
