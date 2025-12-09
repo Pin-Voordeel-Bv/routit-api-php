@@ -1,6 +1,6 @@
 <?php
 
-namespace Inserve\RoutITAPI\Request\NewFiberOrderRequest\Enum;
+namespace Inserve\RoutITAPI\Enum;
 
 enum DonorWsoCode: string
 {

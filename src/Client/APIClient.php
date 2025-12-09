@@ -8,6 +8,7 @@ use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Request;
 use Inserve\RoutITAPI\Exception\RoutITAPIException;
+use Inserve\RoutITAPI\Request\NewDslOrderRequest;
 use Inserve\RoutITAPI\Request\RoutITRequestInterface;
 use Inserve\RoutITAPI\Response\ErrorResponse;
 use Psr\Log\LoggerAwareTrait;
@@ -157,6 +158,28 @@ final class APIClient
      */
     protected function serializeRequest(RoutITRequestInterface $request): string
     {
+        // 🔹 Special-case NewDslOrderRequest to remove phantom "complexAddress"
+        if ($request instanceof NewDslOrderRequest) {
+            // First let the normalizer build the data
+            $normalized = $this->normalizer->normalize($request);
+
+            // Debug if you like:
+            // var_dump(array_keys($normalized));
+
+            // ❌ Remove the unwanted key
+            unset($normalized['complexAddress']);
+
+            // Now encode the already-normalized array to XML
+            return $this->serializer->encode(
+                $normalized,
+                XmlEncoder::FORMAT,
+                [
+                    XmlEncoder::ROOT_NODE_NAME => $request->getRootNode(),
+                    XmlEncoder::ENCODER_IGNORED_NODE_TYPES => [XML_PI_NODE],
+                ]
+            );
+        }
+
         return $this->serializer->serialize(
             $request,
             XmlEncoder::FORMAT,

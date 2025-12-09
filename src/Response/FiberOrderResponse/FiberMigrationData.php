@@ -2,7 +2,7 @@
 
 namespace Inserve\RoutITAPI\Response\FiberOrderResponse;
 
-use Inserve\RoutITAPI\Response\FiberOrderResponse\Enum\DonorWsoCode;
+use Inserve\RoutITAPI\Enum\DonorWsoCode;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 /**

@@ -2,7 +2,7 @@
 
 namespace Inserve\RoutITAPI\Request\NewFiberOrderRequest;
 
-use Inserve\RoutITAPI\Request\NewFiberOrderRequest\Enum\DonorWsoCode;
+use Inserve\RoutITAPI\Enum\DonorWsoCode;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 final class FiberMigrationData
