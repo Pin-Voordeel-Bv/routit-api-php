@@ -1,6 +1,6 @@
 <?php
 
-namespace Inserve\RoutITAPI\Request\Enum;
+namespace Inserve\RoutITAPI\Enum;
 
 enum SubnetType: string
 {

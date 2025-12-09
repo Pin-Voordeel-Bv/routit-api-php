@@ -1,6 +1,6 @@
 <?php
 
-namespace Inserve\RoutITAPI\Request\NewDslOrderRequest\Enum;
+namespace Inserve\RoutITAPI\Enum;
 
 enum IPVersion: string
 {

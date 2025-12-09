@@ -7,9 +7,9 @@ use DateTimeInterface;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 /**
- * FiberOrderResponseData_V1
+ * DslOrderData_V3
  */
-final class DslOrderResponse
+final class DslOrderUpdate
 {
     #[SerializedName('OrderId')]
     private ?int $orderId = null;

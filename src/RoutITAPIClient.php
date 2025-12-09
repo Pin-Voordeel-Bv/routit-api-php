@@ -8,6 +8,7 @@ use Inserve\RoutITAPI\Exception\RoutITAPIException;
 use Inserve\RoutITAPI\Request\CustomerDataRequest;
 use Inserve\RoutITAPI\Request\DeactivateCustomerRequest;
 use Inserve\RoutITAPI\Request\ModifyCustomerRequest;
+use Inserve\RoutITAPI\Request\ModifyDslOrderRequest;
 use Inserve\RoutITAPI\Request\ModifyFiberOrderRequest;
 use Inserve\RoutITAPI\Request\NewCustomerRequest;
 use Inserve\RoutITAPI\Request\NewDslOrderRequest;
@@ -18,7 +19,8 @@ use Inserve\RoutITAPI\Request\RoutITRequestInterface;
 use Inserve\RoutITAPI\Request\ZipCodeCheckRequest;
 use Inserve\RoutITAPI\Response\CustomerDataResponse;
 use Inserve\RoutITAPI\Response\DeactivateCustomerResponse;
-use Inserve\RoutITAPI\Response\DslOrderResponse;
+use Inserve\RoutITAPI\Response\DslOrderData;
+use Inserve\RoutITAPI\Response\DslOrderUpdate;
 use Inserve\RoutITAPI\Response\FiberOrderResponse;
 use Inserve\RoutITAPI\Response\ModifyCustomerResponse;
 use Inserve\RoutITAPI\Response\NewCustomerResponse;
@@ -172,13 +174,25 @@ final class RoutITAPIClient
     /**
      * @param NewDslOrderRequest|null $request
      *
-     * @return DslOrderResponse|null
+     * @return DslOrderData|null
      * @throws RoutITAPIException
      */
-    public function newDslOrder(?NewDslOrderRequest $request = null): ?DslOrderResponse
+    public function newDslOrder(?NewDslOrderRequest $request = null): ?DslOrderData
     {
         /** @var DslOrderResponse|null */
-        return $this->apiCallWithEndpoint($request ?? new NewDslOrderRequest(), DslOrderResponse::class, "/queued");
+        return $this->apiCallWithEndpoint($request ?? new NewDslOrderRequest(), DslOrderData::class, "/queued");
+    }
+
+    /**
+     * @param ModifyDslOrderRequest|null $request
+     *
+     * @return DslOrderUpdate|null
+     * @throws RoutITAPIException
+     */
+    public function modifyDslOrder(?ModifyDslOrderRequest $request = null): ?DslOrderUpdate
+    {
+        /** @var DslOrderUpdate|null */
+        return $this->apiCallWithEndpoint($request ?? new ModifyDslOrderRequest(), DslOrderUpdate::class, "/queued");
     }
 
     /**

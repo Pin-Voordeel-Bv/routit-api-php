@@ -2,9 +2,9 @@
 
 namespace Inserve\RoutITAPI\Request\NewDslOrderRequest;
 
-use Inserve\RoutITAPI\Request\NewDslOrderRequest\Enum\IPVersion;
-use Inserve\RoutITAPI\Request\Enum\SubnetType;
-use Inserve\RoutITAPI\Request\Enum\SubnetPriority;
+use Inserve\RoutITAPI\Enum\IPVersion;
+use Inserve\RoutITAPI\Enum\SubnetType;
+use Inserve\RoutITAPI\Enum\SubnetPriority;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Serializer\Attribute\Ignore;
 

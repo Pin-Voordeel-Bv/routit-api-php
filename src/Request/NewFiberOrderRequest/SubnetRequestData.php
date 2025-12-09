@@ -2,8 +2,8 @@
 
 namespace Inserve\RoutITAPI\Request\NewFiberOrderRequest;
 
-use Inserve\RoutITAPI\Request\Enum\SubnetType;
-use Inserve\RoutITAPI\Request\Enum\SubnetPriority;
+use Inserve\RoutITAPI\Enum\SubnetType;
+use Inserve\RoutITAPI\Enum\SubnetPriority;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 final class SubnetRequestData
