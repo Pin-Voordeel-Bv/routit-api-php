@@ -179,20 +179,20 @@ final class RoutITAPIClient
      */
     public function newDslOrder(?NewDslOrderRequest $request = null): ?DslOrderData
     {
-        /** @var DslOrderResponse|null */
+        /** @var DslOrderData|null */
         return $this->apiCallWithEndpoint($request ?? new NewDslOrderRequest(), DslOrderData::class, "/queued");
     }
 
     /**
      * @param ModifyDslOrderRequest|null $request
      *
-     * @return DslOrderUpdate|null
+     * @return DslOrderData|null
      * @throws RoutITAPIException
      */
-    public function modifyDslOrder(?ModifyDslOrderRequest $request = null): ?DslOrderUpdate
+    public function modifyDslOrder(?ModifyDslOrderRequest $request = null): ?DslOrderData
     {
-        /** @var DslOrderUpdate|null */
-        return $this->apiCallWithEndpoint($request ?? new ModifyDslOrderRequest(), DslOrderUpdate::class, "/queued");
+        /** @var DslOrderData|null */
+        return $this->apiCallWithEndpoint($request ?? new ModifyDslOrderRequest(), DslOrderData::class, "/queued");
     }
 
     /**

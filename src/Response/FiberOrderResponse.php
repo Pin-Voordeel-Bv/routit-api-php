@@ -6,7 +6,7 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use Inserve\RoutITAPI\Response\FiberOrderResponse\FiberMigrationData;
 use Inserve\RoutITAPI\Response\FiberOrderResponse\FullAddress;
-use Inserve\RoutITAPI\Response\FiberOrderResponse\VlanFiberOrderResponseData
+use Inserve\RoutITAPI\Response\FiberOrderResponse\VlanFiberOrderResponseData;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 /**
