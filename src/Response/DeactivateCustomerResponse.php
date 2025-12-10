@@ -1,57 +1,51 @@
 <?php
-
 namespace Inserve\RoutITAPI\Response;
 
+use Inserve\RoutITAPI\Header;
+use Inserve\RoutITAPI\Response\DeactivateCustomerResponse\CustomerData;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
-/**
- *
- */
 final class DeactivateCustomerResponse
 {
-    #[SerializedName('CustomerId')]
-    protected ?int $customerId = null;
+    #[SerializedName('Header')]
+    private ?Header $header = null;
 
-    #[SerializedName('IsActive')]
-    protected ?bool $isActive = null;
+    #[SerializedName('State')]
+    private ?State $state = null;
 
-    /**
-     * @return string|null
-     */
-    public function getCustomerId(): ?int
+    #[SerializedName('CustomerData')]
+    private ?CustomerData $customerData = null;
+
+    public function getHeader(): ?Header
     {
-        return $this->customerId;
+        return $this->header;
     }
 
-    /**
-     * @param string|null $customerId
-     *
-     * @return $this
-     */
-    public function setCustomerId(?int $customerId): self
+    public function setHeader(?Header $header): self
     {
-        $this->customerId = $customerId;
-
+        $this->header = $header;
         return $this;
     }
 
-    /**
-     * @return bool|null
-     */
-    public function getIsActive(): ?bool
+    public function getState(): ?State
     {
-        return $this->isActive;
+        return $this->state;
     }
 
-    /**
-     * @param bool|null $isActive
-     *
-     * @return $this
-     */
-    public function setIsActive(?bool $isActive): self
+    public function setState(?State $state): self
     {
-        $this->isActive = $isActive;
+        $this->state = $state;
+        return $this;
+    }
 
+    public function getCustomerData(): ?CustomerData
+    {
+        return $this->customerData;
+    }
+
+    public function setCustomerData(?CustomerData $customerData): self
+    {
+        $this->customerData = $customerData;
         return $this;
     }
 }

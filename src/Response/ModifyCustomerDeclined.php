@@ -2,10 +2,9 @@
 namespace Inserve\RoutITAPI\Response;
 
 use Inserve\RoutITAPI\Header;
-use Inserve\RoutITAPI\Response\CustomerData;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
-final class ModifyCustomerResponse
+final class ModifyCustomerDeclined
 {
     #[SerializedName('Header')]
     private ?Header $header = null;
@@ -13,8 +12,8 @@ final class ModifyCustomerResponse
     #[SerializedName('State')]
     private ?State $state = null;
 
-    #[SerializedName('CustomerData')]
-    private ?CustomerData $customerData = null;
+    #[SerializedName('CustomerId')]
+    private ?string $customerId = null;
 
     public function getHeader(): ?Header
     {
@@ -38,14 +37,14 @@ final class ModifyCustomerResponse
         return $this;
     }
 
-    public function getCustomerData(): ?CustomerData
+    public function getCustomerId(): ?string
     {
-        return $this->customerData;
+        return $this->customerId;
     }
 
-    public function setCustomerData(?CustomerData $customerData): self
+    public function setCustomerId(?string $customerId): self
     {
-        $this->customerData = $customerData;
+        $this->customerId = $customerId;
         return $this;
     }
 }

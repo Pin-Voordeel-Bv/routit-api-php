@@ -2,8 +2,6 @@
 
 namespace Inserve\RoutITAPI\Response;
 
-use DateTimeImmutable;
-use DateTimeInterface;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 /**
@@ -11,8 +9,8 @@ use Symfony\Component\Serializer\Attribute\SerializedName;
  */
 final class CustomerData
 {
-    #[SerializedName('Id')]
-    protected ?int $id = null;
+    #[SerializedName('CustomerId')]
+    protected ?string $customerId = null;
 
     #[SerializedName('Name')]
     protected ?string $name = null;
@@ -40,12 +38,6 @@ final class CustomerData
 
     #[SerializedName('Phone2')]
     protected ?string $phone2 = null;
-
-    #[SerializedName('DateCreated')]
-    protected ?DateTimeInterface  $dateCreated = null;
-
-    #[SerializedName('IsActive')]
-    protected ?bool $isActive = null;
 
     #[SerializedName('Fax')]
     protected ?string $fax = null;
@@ -77,28 +69,22 @@ final class CustomerData
     #[SerializedName('VATNr')]
     protected ?string $vATNr = null;
 
-    #[SerializedName('FirstBillingDate')]
-    protected ?DateTimeInterface  $firstBillingDate = null;
-
-    #[SerializedName('KrnId')]
-    protected ?string $krnId = null;
-
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getCustomerId(): ?string
     {
-        return $this->id;
+        return $this->customerId;
     }
 
     /**
-     * @param int|null $id
+     * @param string|null $customerId
      *
      * @return $this
      */
-    public function setId(?int $id): self
+    public function setCustomerId(?string $customerId): self
     {
-        $this->id = $id;
+        $this->customerId = $customerId;
 
         return $this;
     }
@@ -279,49 +265,6 @@ final class CustomerData
     public function setPhone2(?string $phone2): self
     {
         $this->phone2 = $phone2;
-
-        return $this;
-    }
-
-    /**
-     * @return DateTimeInterface|null
-     */
-    public function getDateCreated(): ?DateTimeInterface
-    {
-        return $this->dateCreated;
-    }
-
-    /**
-     * @param DateTimeInterface|string|null $dateCreated
-     *
-     * @return $this
-     */
-    public function setDateCreated(DateTimeInterface|string|null $dateCreated): self
-    {
-        if (is_string($dateCreated)) {
-            $dateCreated = new DateTimeImmutable($dateCreated);
-        }
-
-        $this->dateCreated = $dateCreated;
-        return $this;
-    }
-
-    /**
-     * @return bool|null
-     */
-    public function getIsActive(): ?bool
-    {
-        return $this->isActive;
-    }
-
-    /**
-     * @param bool|null $isActive
-     *
-     * @return $this
-     */
-    public function setIsActive(?bool $isActive): self
-    {
-        $this->isActive = $isActive;
 
         return $this;
     }
@@ -522,92 +465,6 @@ final class CustomerData
     public function setVATNr(?string $vATNr): self
     {
         $this->vATNr = $vATNr;
-
-        return $this;
-    }
-
-    /**
-     * @return DateTimeInterface|null
-     */
-    public function getFirstBillingDate(): ?DateTimeInterface
-    {
-        return $this->firstBillingDate;
-    }
-
-    /**
-     * @param mixed $firstBillingDate
-     *
-     * @return $this
-     */
-    public function setFirstBillingDate(mixed $firstBillingDate): self
-    {
-        // Case 1: explicit null
-        if ($firstBillingDate === null) {
-            $this->firstBillingDate = null;
-            return $this;
-        }
-
-        // Case 2: empty string from XML
-        if ($firstBillingDate === '') {
-            $this->firstBillingDate = null;
-            return $this;
-        }
-
-        // Case 3: XML decoder gave us an array with xsi:nil / nil="true"
-        if (is_array($firstBillingDate)) {
-            // Try to detect any kind of "nil=true"
-            $flat = array_change_key_case($firstBillingDate, CASE_LOWER);
-
-            if (
-                ($flat['@xsi:nil'] ?? $flat['@nil'] ?? $flat['nil'] ?? null) === 'true'
-            ) {
-                $this->firstBillingDate = null;
-                return $this;
-            }
-
-            // If it’s some unexpected shape, you can log and bail out
-            $this->firstBillingDate = null;
-            return $this;
-        }
-
-        // Case 4: normal string date like "2023-03-15"
-        if (is_string($firstBillingDate)) {
-            try {
-                $firstBillingDate = new DateTimeImmutable($firstBillingDate);
-            } catch (\Throwable $e) {
-                // invalid date → store null and continue
-                $this->firstBillingDate = null;
-                return $this;
-            }
-        }
-
-        // Case 5: already a DateTimeInterface
-        if ($firstBillingDate instanceof DateTimeInterface) {
-            $this->firstBillingDate = $firstBillingDate;
-        } else {
-            // Fallback: unknown type → null
-            $this->firstBillingDate = null;
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getKrnId(): ?string
-    {
-        return $this->krnId;
-    }
-
-    /**
-     * @param string|null $krnId
-     *
-     * @return $this
-     */
-    public function setKrnId(?string $krnId): self
-    {
-        $this->krnId = $krnId;
 
         return $this;
     }
