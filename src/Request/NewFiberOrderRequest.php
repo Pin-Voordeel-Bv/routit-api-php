@@ -2,7 +2,7 @@
 
 namespace Inserve\RoutITAPI\Request;
 
-use Inserve\RoutITAPI\Request\Header;
+use Inserve\RoutITAPI\Header;
 use Inserve\RoutITAPI\Request\NewFiberOrderRequest\FiberAccessData;
 use Inserve\RoutITAPI\Request\NewFiberOrderRequest\FiberMigrationData;
 use Inserve\RoutITAPI\Request\NewFiberOrderRequest\NewFiberRequestData;

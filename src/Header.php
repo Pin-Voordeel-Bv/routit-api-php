@@ -1,6 +1,6 @@
 <?php
 
-namespace Inserve\RoutITAPI\Request;
+namespace Inserve\RoutITAPI;
 
 use Symfony\Component\Serializer\Attribute\SerializedName;
 

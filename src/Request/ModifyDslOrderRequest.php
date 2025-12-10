@@ -2,7 +2,7 @@
 
 namespace Inserve\RoutITAPI\Request;
 
-use Inserve\RoutITAPI\Request\Header;
+use Inserve\RoutITAPI\Header;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 final class ModifyDslOrderRequest extends AbstractRoutITRequest implements RoutITRequestInterface

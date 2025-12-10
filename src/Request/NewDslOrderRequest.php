@@ -2,7 +2,7 @@
 
 namespace Inserve\RoutITAPI\Request;
 
-use Inserve\RoutITAPI\Request\Header;
+use Inserve\RoutITAPI\Header;
 use Inserve\RoutITAPI\Request\NewDslOrderRequest\DslChannel;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Serializer\Attribute\SerializedPath;

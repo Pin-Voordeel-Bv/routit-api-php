@@ -2,7 +2,7 @@
 
 namespace Inserve\RoutITAPI\Request;
 
-use Inserve\RoutITAPI\Request\Header;
+use Inserve\RoutITAPI\Header;
 use Inserve\RoutITAPI\Request\ModifyFiberOrderRequest\ModifyFiberRequestData;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
