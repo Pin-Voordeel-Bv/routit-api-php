@@ -2,6 +2,7 @@
 
 namespace Inserve\RoutITAPI\Response;
 
+use Inserve\RoutITAPI\Response\CustomerDataResponse\CustomerData;
 use Symfony\Component\Serializer\Attribute\SerializedPath;
 
 /**

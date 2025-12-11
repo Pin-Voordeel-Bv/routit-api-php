@@ -79,7 +79,7 @@ final class RoutITAPIClient
      * @return CustomerDataResponse|null
      * @throws RoutITAPIException
      */
-    public function getCustomerData(?CustomerDataRequest $request = null): ?CustomerDataResponse
+    public function customerData(?CustomerDataRequest $request = null): ?CustomerDataResponse
     {
         /** @var CustomerDataResponse|null */
         return $this->apiCallWithEndpoint($request ?? new CustomerDataRequest(), CustomerDataResponse::class);
@@ -88,7 +88,7 @@ final class RoutITAPIClient
     /**
      * @throws RoutITAPIException
      */
-    public function getOrderSummary(?OrderSummaryRequest $request = null): ?OrderSummaryResponse
+    public function orderSummary(?OrderSummaryRequest $request = null): ?OrderSummaryResponse
     {
         /** @var OrderSummaryResponse|null */
         return $this->apiCallWithEndpoint($request ?? new OrderSummaryRequest(), OrderSummaryResponse::class);
@@ -99,7 +99,7 @@ final class RoutITAPIClient
      *
      * @throws RoutITAPIException
      */
-    public function getProductPriceDetails(): ?ProductPriceDetailsResponse
+    public function productPriceDetails(): ?ProductPriceDetailsResponse
     {
         /** @var ProductPriceDetailsResponse|null */
         return $this->apiCallWithEndpoint(new ProductPriceDetailsRequest(), ProductPriceDetailsResponse::class);
