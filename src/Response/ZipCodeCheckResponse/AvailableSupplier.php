@@ -1,7 +1,8 @@
 <?php
 
-namespace Inserve\RoutITAPI\Response;
+namespace Inserve\RoutITAPI\Response\ZipCodeCheckResponse;
 
+use Inserve\RoutITAPI\Response\ZipCodeCheckResponse\AvailableSpeed;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Serializer\Attribute\SerializedPath;
 
