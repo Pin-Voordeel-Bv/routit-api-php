@@ -33,6 +33,6 @@ $apiClient->configure(
     'interfaces/routit/id'
 );
 
-$result = $apiClient->getCustomerData();
+$result = $apiClient->customerData();
 
 ```
