@@ -12,7 +12,7 @@
 A PHP Wrapper for the RoutIT API
 
 ## Installation
-`composer require inserve/routit-api-php`
+`composer require pinvandaag/routit-api-php`
 
 ## Usage example
 
