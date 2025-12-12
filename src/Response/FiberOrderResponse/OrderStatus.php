@@ -2,7 +2,7 @@
 
 namespace Inserve\RoutITAPI\Response\FiberOrderResponse;
 
-use Inserve\RoutITAPI\Response\FiberOrderResponse\ArrayOfString;
+use Inserve\RoutITAPI\Response\ArrayOfString;
 use Inserve\RoutITAPI\Response\FiberOrderResponse\Enum\OrderStatusCode;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 

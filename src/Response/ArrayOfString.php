@@ -1,6 +1,6 @@
 <?php
 
-namespace Inserve\RoutITAPI\Response\FiberOrderResponse;
+namespace Inserve\RoutITAPI\Response;
 
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
