@@ -1,6 +1,6 @@
 <?php
 
-namespace Inserve\RoutITAPI\Response;
+namespace Inserve\RoutITAPI\Response\DslOrderData;
 
 use DateTimeImmutable;
 use DateTimeInterface;
