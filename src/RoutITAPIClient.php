@@ -17,6 +17,7 @@ use Inserve\RoutITAPI\Request\NewFiberOrderRequest;
 use Inserve\RoutITAPI\Request\OrderSummaryRequest;
 use Inserve\RoutITAPI\Request\ProductPriceDetailsRequest;
 use Inserve\RoutITAPI\Request\RePlanDslOrderRequest;
+use Inserve\RoutITAPI\Request\UpgradeDslOrderRequest;
 use Inserve\RoutITAPI\Request\RoutITRequestInterface;
 use Inserve\RoutITAPI\Request\ZipCodeCheckRequest;
 use Inserve\RoutITAPI\Response\CustomerDataResponse;
@@ -30,6 +31,7 @@ use Inserve\RoutITAPI\Response\NewCustomerResponse;
 use Inserve\RoutITAPI\Response\OrderSummaryResponse;
 use Inserve\RoutITAPI\Response\ProductPriceDetailsResponse;
 use Inserve\RoutITAPI\Response\RePlanDslOrderResponse;
+use Inserve\RoutITAPI\Response\UpgradeDslOrderResponse;
 use Inserve\RoutITAPI\Response\ZipCodeCheckResponse;
 use Psr\Log\LoggerInterface;
 use SensitiveParameter;
@@ -221,6 +223,18 @@ final class RoutITAPIClient
     {
         /** @var RePlanDslOrderResponse|null */
         return $this->apiCallWithEndpoint($request ?? new RePlanDslOrderRequest(), RePlanDslOrderResponse::class, "/queued");
+    }
+
+    /**
+     * @param UpgradeDslOrderRequest|null $request
+     *
+     * @return UpgradeDslOrderResponse|null
+     * @throws RoutITAPIException
+     */
+    public function upgradeDslOrder(?UpgradeDslOrderRequest $request = null): ?UpgradeDslOrderResponse
+    {
+        /** @var UpgradeDslOrderResponse|null */
+        return $this->apiCallWithEndpoint($request ?? new UpgradeDslOrderRequest(), UpgradeDslOrderResponse::class, "/queued");
     }
 
     /**
