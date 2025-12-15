@@ -8,6 +8,7 @@ use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Request;
 use Inserve\RoutITAPI\Exception\RoutITAPIException;
+use Inserve\RoutITAPI\Request\MigrateDslOrderRequest;
 use Inserve\RoutITAPI\Request\NewDslOrderRequest;
 use Inserve\RoutITAPI\Request\RoutITRequestInterface;
 use Inserve\RoutITAPI\Response\ErrorResponse;
@@ -170,6 +171,18 @@ final class APIClient
             unset($normalized['complexAddress']);
 
             // Now encode the already-normalized array to XML
+            return $this->serializer->encode(
+                $normalized,
+                XmlEncoder::FORMAT,
+                [
+                    XmlEncoder::ROOT_NODE_NAME => $request->getRootNode(),
+                    XmlEncoder::ENCODER_IGNORED_NODE_TYPES => [XML_PI_NODE],
+                ]
+            );
+        }
+        if ($request instanceof MigrateDslOrderRequest) {
+            $normalized = $this->normalizer->normalize($request);
+            unset($normalized['realtime']);
             return $this->serializer->encode(
                 $normalized,
                 XmlEncoder::FORMAT,

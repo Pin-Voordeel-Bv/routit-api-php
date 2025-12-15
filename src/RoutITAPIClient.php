@@ -7,6 +7,7 @@ use Inserve\RoutITAPI\Client\APIClient;
 use Inserve\RoutITAPI\Exception\RoutITAPIException;
 use Inserve\RoutITAPI\Request\CustomerDataRequest;
 use Inserve\RoutITAPI\Request\DeactivateCustomerRequest;
+use Inserve\RoutITAPI\Request\MigrateDslOrderRequest;
 use Inserve\RoutITAPI\Request\ModifyCustomerRequest;
 use Inserve\RoutITAPI\Request\ModifyDslOrderRequest;
 use Inserve\RoutITAPI\Request\ModifyFiberOrderRequest;
@@ -22,6 +23,7 @@ use Inserve\RoutITAPI\Response\DeactivateCustomerResponse;
 use Inserve\RoutITAPI\Response\DslOrderData;
 use Inserve\RoutITAPI\Response\DslOrderUpdate;
 use Inserve\RoutITAPI\Response\FiberOrderResponse;
+use Inserve\RoutITAPI\Response\MigrateDslOrderResponse;
 use Inserve\RoutITAPI\Response\ModifyCustomerResponse;
 use Inserve\RoutITAPI\Response\NewCustomerResponse;
 use Inserve\RoutITAPI\Response\OrderSummaryResponse;
@@ -193,6 +195,18 @@ final class RoutITAPIClient
     {
         /** @var DslOrderData|null */
         return $this->apiCallWithEndpoint($request ?? new ModifyDslOrderRequest(), DslOrderData::class, "/queued");
+    }
+
+    /**
+     * @param MigrateDslOrderRequest|null $request
+     *
+     * @return MigrateDslOrderResponse|null
+     * @throws RoutITAPIException
+     */
+    public function migrateDslOrder(?MigrateDslOrderRequest $request = null): ?MigrateDslOrderResponse
+    {
+        /** @var MigrateDslOrderResponse|null */
+        return $this->apiCallWithEndpoint($request ?? new MigrateDslOrderRequest(), MigrateDslOrderResponse::class, "/queued");
     }
 
     /**
