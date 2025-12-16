@@ -7,6 +7,7 @@ use Inserve\RoutITAPI\Client\APIClient;
 use Inserve\RoutITAPI\Exception\RoutITAPIException;
 use Inserve\RoutITAPI\Request\CustomerDataRequest;
 use Inserve\RoutITAPI\Request\DeactivateCustomerRequest;
+use Inserve\RoutITAPI\Request\FtthLineTestRequest;
 use Inserve\RoutITAPI\Request\MigrateDslOrderRequest;
 use Inserve\RoutITAPI\Request\ModifyCustomerRequest;
 use Inserve\RoutITAPI\Request\ModifyDslOrderRequest;
@@ -26,6 +27,7 @@ use Inserve\RoutITAPI\Response\DeactivateCustomerResponse;
 use Inserve\RoutITAPI\Response\DslOrderData;
 use Inserve\RoutITAPI\Response\DslOrderUpdate;
 use Inserve\RoutITAPI\Response\FiberOrderResponse;
+use Inserve\RoutITAPI\Response\FtthLineTestResponse;
 use Inserve\RoutITAPI\Response\MigrateDslOrderResponse;
 use Inserve\RoutITAPI\Response\ModifyCustomerResponse;
 use Inserve\RoutITAPI\Response\NewCustomerResponse;
@@ -250,6 +252,18 @@ final class RoutITAPIClient
     {
         /** @var UpgradeOrderResponse|null */
         return $this->apiCallWithEndpoint($request ?? new UpgradeOrderRequest(), UpgradeOrderResponse::class, "/queued");
+    }
+
+    /**
+     * @param FtthLineTestRequest|null $request
+     *
+     * @return FtthLineTestResponse|null
+     * @throws RoutITAPIException
+     */
+    public function ftthLineTest(?FtthLineTestRequest $request = null): ?FtthLineTestResponse
+    {
+        /** @var FtthLineTestResponse|null */
+        return $this->apiCallWithEndpoint($request ?? new FtthLineTestRequest(), FtthLineTestResponse::class, "/queued");
     }
 
     /**
