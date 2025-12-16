@@ -8,6 +8,7 @@ use Inserve\RoutITAPI\Exception\RoutITAPIException;
 use Inserve\RoutITAPI\Request\CustomerDataRequest;
 use Inserve\RoutITAPI\Request\DeactivateCustomerRequest;
 use Inserve\RoutITAPI\Request\FtthLineTestRequest;
+use Inserve\RoutITAPI\Request\LineCheckRequest;
 use Inserve\RoutITAPI\Request\MigrateDslOrderRequest;
 use Inserve\RoutITAPI\Request\ModifyCustomerRequest;
 use Inserve\RoutITAPI\Request\ModifyDslOrderRequest;
@@ -28,6 +29,7 @@ use Inserve\RoutITAPI\Response\DslOrderData;
 use Inserve\RoutITAPI\Response\DslOrderUpdate;
 use Inserve\RoutITAPI\Response\FiberOrderResponse;
 use Inserve\RoutITAPI\Response\FtthLineTestResponse;
+use Inserve\RoutITAPI\Response\LineCheckResponse;
 use Inserve\RoutITAPI\Response\MigrateDslOrderResponse;
 use Inserve\RoutITAPI\Response\ModifyCustomerResponse;
 use Inserve\RoutITAPI\Response\NewCustomerResponse;
@@ -264,6 +266,18 @@ final class RoutITAPIClient
     {
         /** @var FtthLineTestResponse|null */
         return $this->apiCallWithEndpoint($request ?? new FtthLineTestRequest(), FtthLineTestResponse::class, "/queued");
+    }
+
+    /**
+     * @param LineCheckRequest|null $request
+     *
+     * @return LineCheckResponse|null
+     * @throws RoutITAPIException
+     */
+    public function lineCheck(?LineCheckRequest $request = null): ?LineCheckResponse
+    {
+        /** @var LineCheckResponse|null */
+        return $this->apiCallWithEndpoint($request ?? new LineCheckRequest(), LineCheckResponse::class, "/queued");
     }
 
     /**
