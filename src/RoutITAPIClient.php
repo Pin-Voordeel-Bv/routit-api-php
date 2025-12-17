@@ -9,6 +9,7 @@ use Inserve\RoutITAPI\Request\CustomerDataRequest;
 use Inserve\RoutITAPI\Request\DeactivateCustomerRequest;
 use Inserve\RoutITAPI\Request\FtthLineTestRequest;
 use Inserve\RoutITAPI\Request\LineCheckRequest;
+use Inserve\RoutITAPI\Request\LineDiagnoseRequest;
 use Inserve\RoutITAPI\Request\MigrateDslOrderRequest;
 use Inserve\RoutITAPI\Request\ModifyCustomerRequest;
 use Inserve\RoutITAPI\Request\ModifyDslOrderRequest;
@@ -278,6 +279,18 @@ final class RoutITAPIClient
     {
         /** @var LineCheckResponse|null */
         return $this->apiCallWithEndpoint($request ?? new LineCheckRequest(), LineCheckResponse::class, "/queued");
+    }
+
+    /**
+     * @param LineDiagnoseRequest|null $request
+     *
+     * @return LineDiagnoseResponse|null
+     * @throws RoutITAPIException
+     */
+    public function lineDiagnose(?LineDiagnoseRequest $request = null): ?LineDiagnoseResponse
+    {
+        /** @var LineDiagnoseResponse|null */
+        return $this->apiCallWithEndpoint($request ?? new LineDiagnoseRequest(), LineDiagnoseResponse::class, "/queued");
     }
 
     /**
