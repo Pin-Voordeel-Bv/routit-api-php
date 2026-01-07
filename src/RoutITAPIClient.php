@@ -14,7 +14,7 @@ use Inserve\RoutITAPI\Request\MigrateDslOrderRequest;
 use Inserve\RoutITAPI\Request\ModifyCustomerRequest;
 use Inserve\RoutITAPI\Request\ModifyDslOrderRequest;
 use Inserve\RoutITAPI\Request\ModifyFiberOrderRequest;
-use Inserve\RoutITAPI\Request\ModifyVlanFiberOrderRequest;
+use Inserve\RoutITAPI\Request\ModifyVlanFiberRequest;
 use Inserve\RoutITAPI\Request\NewCustomerRequest;
 use Inserve\RoutITAPI\Request\NewDslOrderRequest;
 use Inserve\RoutITAPI\Request\NewFiberOrderRequest;
@@ -200,7 +200,7 @@ final class RoutITAPIClient
         return $this->apiCallWithEndpoint($request ?? new NewVlanFiberOrderRequest(), VlanFiberOrderResponse::class, "/queued");
     }
 
-    public function modifyVlanFiberOrder(?ModifyVlanFiberRequest $request = null): ?VlanFiberOrderResponse
+    public function modifyVlanFiber(?ModifyVlanFiberRequest $request = null): ?VlanFiberOrderResponse
     {
         /** @var VlanFiberOrderResponse|null */
         return $this->apiCallWithEndpoint($request ?? new ModifyVlanFiberRequest(), VlanFiberOrderResponse::class, "/queued");
