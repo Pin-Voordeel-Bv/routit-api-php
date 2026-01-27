@@ -138,13 +138,20 @@ final class APIClient
 
             // Still treat NinaResponse as an application error (XML payload)
             if (str_contains($body, self::XML_ERROR_RESPONSE_TAG)) {
-                /** @var ErrorResponse|null $errorResponse */
-                $errorResponse = $this->deserialize($body, ErrorResponse::class);
+                /** @var ErrorResponse|null $nina */
+                $nina = $this->deserialize($body, ErrorResponse::class);
 
-                throw new RoutITAPIException(
-                    (string) ($errorResponse?->getErrorMessage() ?? 'Unknown NinaResponse error'),
-                    (int) ($errorResponse?->getErrorCode() ?? 0)
-                );
+                if ($nina !== null) {
+                    $isSuccess = (bool)($nina->getIsSuccess() ?? false);
+                    $errorCode = (int)($nina->getErrorCode() ?? 0);
+
+                    if (!$isSuccess || $errorCode !== 0) {
+                        throw new RoutITAPIException(
+                            (string)($nina->getErrorMessage() ?? 'Unknown NinaResponse error'),
+                            $errorCode
+                        );
+                    }
+                }
             }
 
             // If upstream returned HTML (e.g., 500 gateway page), fail cleanly

@@ -9,6 +9,9 @@ use Symfony\Component\Serializer\Attribute\SerializedName;
  */
 final class ErrorResponse
 {
+    #[SerializedName('IsSuccess')]
+    protected ?bool $isSuccess = null;
+    
     #[SerializedName('ErrorCode')]
     protected ?int $errorCode = null;
 
@@ -18,6 +21,24 @@ final class ErrorResponse
     /** @var array<string,string>|null */
     #[SerializedName('ErrorDetails')]
     protected ?array $errorDetails = null;
+
+    /**
+     * @return bool|null
+     */
+    public function getIsSuccess(): ?bool
+    {
+        return $this->isSuccess;
+    }
+
+    /**
+     * @param bool|null $isSuccess
+     * @return $this
+     */
+    public function setIsSuccess(?bool $isSuccess): self
+    {
+        $this->isSuccess = $isSuccess;
+        return $this;
+    }
 
     /**
      * @return int|null
