@@ -22,6 +22,7 @@ use Inserve\RoutITAPI\Request\NewVlanFiberOrderRequest;
 use Inserve\RoutITAPI\Request\OrderSummaryRequest;
 use Inserve\RoutITAPI\Request\ProductPriceDetailsRequest;
 use Inserve\RoutITAPI\Request\RePlanDslOrderRequest;
+use Inserve\RoutITAPI\Request\TerminateOrderRequest;
 use Inserve\RoutITAPI\Request\UpgradeDslOrderRequest;
 use Inserve\RoutITAPI\Request\UpgradeOrderRequest;
 use Inserve\RoutITAPI\Request\RoutITRequestInterface;
@@ -40,6 +41,7 @@ use Inserve\RoutITAPI\Response\NewDslOrderResponse;
 use Inserve\RoutITAPI\Response\OrderSummaryResponse;
 use Inserve\RoutITAPI\Response\ProductPriceDetailsResponse;
 use Inserve\RoutITAPI\Response\RePlanDslOrderResponse;
+use Inserve\RoutITAPI\Request\TerminateOrderResponse;
 use Inserve\RoutITAPI\Response\UpgradeDslOrderResponse;
 use Inserve\RoutITAPI\Response\UpgradeOrderResponse;
 use Inserve\RoutITAPI\Response\VlanFiberOrderResponse;
@@ -312,6 +314,18 @@ final class RoutITAPIClient
     {
         /** @var LineDiagnoseResponse|null */
         return $this->apiCallWithEndpoint($request ?? new LineDiagnoseRequest(), LineDiagnoseResponse::class, "/queued");
+    }
+
+    /**
+     * @param TerminateOrderRequest|null $request
+     *
+     * @return TerminateOrderResponse|null
+     * @throws RoutITAPIException
+     */
+    public function terminateOrder(?TerminateOrderRequest $request = null): ?TerminateOrderResponse
+    {
+        /** @var TerminateOrderResponse|null */
+        return $this->apiCallWithEndpoint($request ?? new TerminateOrderRequest(), TerminateOrderResponse::class, "/queued");
     }
 
     /**
