@@ -2,14 +2,11 @@
 
 namespace Inserve\RoutITAPI\Response;
 
-use DateTimeImmutable;
-use DateTimeInterface;
-use Exception;
 use Inserve\RoutITAPI\Header;
-use Inserve\RoutITAPI\Response\LineCheckResponse\DeltResponse;
+use Inserve\RoutITAPI\Response\LineDiagnoseResponse\LineDiagnoseResult;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
-final class LineCheckResponse
+final class LineDiagnoseResponse
 {
     #[SerializedName('Header')]
     private ?Header $header = null;
@@ -20,16 +17,8 @@ final class LineCheckResponse
     #[SerializedName('ErrorMessage')]
     private ?string $errorMessage = null;
 
-    #[SerializedName('DeltResponse')]
-    private ?DeltResponse $deltResponse = null;
-
-    // ───────── helpers ─────────
-
-    private function normalizeInt(int|string|null $value): ?int
-    {
-        if ($value === null || $value === '') return null;
-        return (int)$value;
-    }
+    #[SerializedName('LineDiagnoseResult')]
+    private ?LineDiagnoseResult $lineDiagnoseResult = null;
 
     // ───────── Header ─────────
 
@@ -51,9 +40,9 @@ final class LineCheckResponse
         return $this->orderId;
     }
 
-    public function setOrderId(int|string|null $orderId): self
+    public function setOrderId(?int $orderId): self
     {
-        $this->orderId = $this->normalizeInt($orderId);
+        $this->orderId = $orderId;
         return $this;
     }
 
@@ -70,16 +59,16 @@ final class LineCheckResponse
         return $this;
     }
 
-    // ───────── DeltResponse ─────────
+    // ───────── LineDiagnoseResult ─────────
 
-    public function getDeltResponse(): ?DeltResponse
+    public function getLineDiagnoseResult(): ?LineDiagnoseResult
     {
-        return $this->deltResponse;
+        return $this->lineDiagnoseResult;
     }
 
-    public function setDeltResponse(?DeltResponse $deltResponse): self
+    public function setLineDiagnoseResult(?LineDiagnoseResult $result): self
     {
-        $this->deltResponse = $deltResponse;
+        $this->lineDiagnoseResult = $result;
         return $this;
     }
 }
