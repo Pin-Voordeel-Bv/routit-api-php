@@ -207,8 +207,11 @@ final class DslOrderData
         return $this->fromOrderId;
     }
 
-    public function setFromOrderId(?int $fromOrderId): self
+    public function setFromOrderId($fromOrderId): self
     {
+        if (is_array($fromOrderId)) {
+            $fromOrderId = null;
+        }
         $this->fromOrderId = $fromOrderId;
         return $this;
     }
@@ -405,8 +408,11 @@ final class DslOrderData
         return $this->planDate;
     }
 
-    public function setPlanDate(DateTimeInterface|string|null $planDate): self
+    public function setPlanDate($planDate): self
     {
+        if (is_array($planDate)) {
+            $planDate = null;
+        }
         $this->planDate = $this->normalizeDateTime($planDate);
         return $this;
     }
@@ -416,8 +422,11 @@ final class DslOrderData
         return $this->nlsLevel;
     }
 
-    public function setNlsLevel(?int $nlsLevel): self
+    public function setNlsLevel($nlsLevel): self
     {
+        if (is_array($nlsLevel)) {
+            $nlsLevel = null;
+        }
         $this->nlsLevel = $nlsLevel;
         return $this;
     }
@@ -640,8 +649,11 @@ final class DslOrderData
         return $this->dikader;
     }
 
-    public function setDikader(?int $dikader): self
+    public function setDikader($dikader): self
     {
+        if (is_array($dikader)) {
+            $dikader = null;
+        }
         $this->dikader = $dikader;
         return $this;
     }
@@ -717,8 +729,11 @@ final class DslOrderData
         return $this->newPlanDate;
     }
 
-    public function setNewPlanDate(DateTimeInterface|string|null $newPlanDate): self
+    public function setNewPlanDate($newPlanDate): self
     {
+        if (is_array($newPlanDate)) {
+            $newPlanDate = null;
+        }
         $this->newPlanDate = $this->normalizeDateTime($newPlanDate);
         return $this;
     }
@@ -739,8 +754,11 @@ final class DslOrderData
         return $this->onDemandMigrationState;
     }
 
-    public function setOnDemandMigrationState(?string $state): self
+    public function setOnDemandMigrationState($state): self
     {
+        if (is_array($state)) {
+            $state = null;
+        }
         $this->onDemandMigrationState = $state;
         return $this;
     }
@@ -763,8 +781,11 @@ final class DslOrderData
         return $this->expectedDateForPlanDate;
     }
 
-    public function setExpectedDateForPlanDate(DateTimeInterface|string|null $expectedDateForPlanDate): self
+    public function setExpectedDateForPlanDate($expectedDateForPlanDate): self
     {
+        if (is_array($expectedDateForPlanDate)) {
+            $expectedDateForPlanDate = null;
+        }
         $this->expectedDateForPlanDate = $this->normalizeDateTime($expectedDateForPlanDate);
         return $this;
     }

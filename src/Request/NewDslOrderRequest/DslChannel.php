@@ -135,8 +135,11 @@ final class DslChannel
         return $this->isNumbered;
     }
 
-    public function setIsNumbered(?bool $isNumbered): self
+    public function setIsNumbered($isNumbered): self
     {
+        if (is_array($isNumbered)) {
+            $isNumbered = null;
+        }
         $this->isNumbered = $isNumbered;
         return $this;
     }
@@ -146,8 +149,11 @@ final class DslChannel
         return $this->isShut;
     }
 
-    public function setIsShut(?bool $isShut): self
+    public function setIsShut($isShut): self
     {
+        if (is_array($isShut)) {
+            $isShut = null;
+        }
         $this->isShut = $isShut;
         return $this;
     }

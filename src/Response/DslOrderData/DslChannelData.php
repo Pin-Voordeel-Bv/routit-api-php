@@ -244,8 +244,11 @@ final class DslChannelData
         return $this->actualSpeed;
     }
 
-    public function setActualSpeed(?int $actualSpeed): self
+    public function setActualSpeed($actualSpeed): self
     {
+        if (is_array($actualSpeed)) {
+            $actualSpeed = null;
+        }
         $this->actualSpeed = $actualSpeed;
         return $this;
     }
@@ -257,8 +260,11 @@ final class DslChannelData
         return $this->isKpnNetwork;
     }
 
-    public function setIsKpnNetwork(?bool $isKpnNetwork): self
+    public function setIsKpnNetwork($isKpnNetwork): self
     {
+        if (is_array($isKpnNetwork)) {
+            $isKpnNetwork = null;
+        }
         $this->isKpnNetwork = $isKpnNetwork;
         return $this;
     }

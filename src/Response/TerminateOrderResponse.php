@@ -59,8 +59,11 @@ final class TerminateOrderResponse
         return $this->planDate;
     }
 
-    public function setPlanDate(?\DateTimeInterface $planDate): self
+    public function setPlanDate(\DateTimeInterface|string|null $planDate): self
     {
+        if (is_string($planDate)) {
+            $planDate = new \DateTimeImmutable($planDate);
+        }
         $this->planDate = $planDate;
         return $this;
     }
