@@ -5,11 +5,48 @@ namespace Inserve\RoutITAPI\Request\NewDslOrderRequest;
 use Inserve\RoutITAPI\Enum\IPVersion;
 use Inserve\RoutITAPI\Enum\SubnetType;
 use Inserve\RoutITAPI\Enum\SubnetPriority;
+use Inserve\RoutITAPI\Validation\Validator;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Serializer\Attribute\Ignore;
 
 final class Subnet
 {
+    public function validate(): void
+    {
+        // Required fields
+        Validator::assertRequiredFieldsPresent($this, ['cidr', 'subnetType']);
+
+        // Optional string with max length (IP address)
+        Validator::assertOptionalStringLength($this->ipAddress, null, 255, 'IpAddress');
+
+        // Required: cidr must be present and int, between 24 and 32 per doc (update if needed)
+        $allowedCidrs = [32, 30, 29, 28, 27, 26, 25, 24];
+        if (!in_array($this->cidr, $allowedCidrs, true)) {
+            throw new \InvalidArgumentException("CIDR must be one of: " . implode(', ', $allowedCidrs) . ". Given: {$this->cidr}");
+        }
+
+        // Required: subnetType
+        Validator::assertEnumValue(
+            $this->subnetType,
+            ['Unknown', 'Primary', 'Secondary', 'StaticRoute'],
+            'subnetType'
+        );
+
+        // Optional: ipVersion
+        Validator::assertOptionalEnumValue(
+            $this->ipVersion,
+            ['IPv4', 'IPv6'],
+            'ipVersion'
+        );
+
+        // Optional: subnetPriority
+        Validator::assertOptionalEnumValue(
+            $this->subnetPriority,
+            ['P90', 'P100', 'P110'],
+            'subnetPriority'
+        );
+    }
+
     #[SerializedName('IpAddress')]
     private ?string $ipAddress = null;
 

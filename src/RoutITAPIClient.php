@@ -145,7 +145,7 @@ final class RoutITAPIClient
     public function newCustomer(?NewCustomerRequest $request = null): ?NinaResponse
     {
         $request = $request ?? new NewCustomerRequest();
-        // $request->validate();
+        $request->validate();
 
         return $this->apiCallQueued($request);
     }
@@ -213,13 +213,15 @@ final class RoutITAPIClient
     /**
      * @param NewDslOrderRequest|null $request
      *
-     * @return DslOrderData|null
+     * @return NinaResponse|null
      * @throws RoutITAPIException
      */
-    public function newDslOrder(?NewDslOrderRequest $request = null): ?NewDslOrderResponse
+    public function newDslOrder(?NewDslOrderRequest $request = null): ?NinaResponse
     {
-        /** @var NewDslOrderResponse|null */
-        return $this->apiCallWithEndpoint($request ?? new NewDslOrderRequest(), NewDslOrderResponse::class, "/queued");
+        $request = $request ?? new NewDslOrderRequest();
+        $request->validate();
+
+        return $this->apiCallQueued($request);
     }
 
     /**

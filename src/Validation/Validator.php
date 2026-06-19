@@ -7,26 +7,41 @@ use ReflectionClass;
 
 class Validator
 {
-    public static function assertStringLength(string $value, string $field, int $min, int $max): void
+    public static function assertStringLength(?string $value, ?int $min, ?int $max, string $fieldName): void
     {
-        $len = mb_strlen($value);
-        if ($len < $min || $len > $max) {
-            throw new InvalidArgumentException("Field '$field' must be between $min and $max characters, got $len.");
+        if ($value === null) {
+            throw new InvalidArgumentException("Field '$fieldName' is null.");
+        }
+
+        $min = $min ?? 0;
+        $valueStr = (string) $value;
+        if (strlen($valueStr) < $min) {
+            throw new InvalidArgumentException("Field '$fieldName' is shorter than minimum length $min.");
+        }
+        if ($max !== null && strlen($valueStr) > $max) {
+            throw new InvalidArgumentException("Field '$fieldName' is longer than maximum length $max.");
         }
     }
 
     public static function assertRequiredFieldsPresent(object $obj, array $requiredFields): void
     {
-        $ref = new ReflectionClass($obj);
         foreach ($requiredFields as $field) {
-            if (!$ref->hasProperty($field)) {
-                throw new InvalidArgumentException("Missing required property '$field' on " . get_class($obj));
+            $getter = 'get' . ucfirst($field);
+            $value = null;
+
+            if (method_exists($obj, $getter)) {
+                $value = $obj->$getter();
+            } else {
+                $ref = new \ReflectionClass($obj);
+                if ($ref->hasProperty($field)) {
+                    $prop = $ref->getProperty($field);
+                    $prop->setAccessible(true);
+                    $value = $prop->getValue($obj);
+                }
             }
-            $prop = $ref->getProperty($field);
-            $prop->setAccessible(true);
-            $val = $prop->getValue($obj);
-            if ($val === null || (is_string($val) && trim($val) === '')) {
-                throw new InvalidArgumentException("Required property '$field' is null or empty.");
+
+            if ($value === null || (is_string($value) && trim($value) === '')) {
+                throw new \InvalidArgumentException("Required property '$field' is null or empty.");
             }
         }
     }
@@ -39,6 +54,20 @@ class Validator
     ): void {
         if ($value !== null) {
             self::assertStringLength($value, $minLength, $maxLength, $fieldName);
+        }
+    }
+
+    public static function assertEnumValue(string $value, array $allowedValues, string $fieldName): void
+    {
+        if (!in_array($value, $allowedValues, true)) {
+            throw new InvalidArgumentException("Invalid value for '$fieldName': $value. Allowed: " . implode(', ', $allowedValues));
+        }
+    }
+
+    public static function assertOptionalEnumValue(?string $value, array $allowedValues, string $fieldName): void
+    {
+        if ($value !== null) {
+            self::assertEnumValue($value, $allowedValues, $fieldName);
         }
     }
 }
