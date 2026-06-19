@@ -145,12 +145,12 @@ final class APIClient
                     return $body;
                 }
 
-                    throw new RoutITAPIException(
-                        (string) ($nina->errorMessage ?? 'Unknown NinaResponse error'),
-                        $nina->errorCode ?? 0,
-                        null,
-                        $nina->getErrorDetails()
-                    );
+                throw new RoutITAPIException(
+                    (string) ($nina->errorMessage ?? 'Unknown NinaResponse error'),
+                    $nina->errorCode ?? 0,
+                    null,
+                    $nina->getErrorDetails()
+                );
             }
 
             // If upstream returned HTML (e.g., 500 gateway page), fail cleanly
