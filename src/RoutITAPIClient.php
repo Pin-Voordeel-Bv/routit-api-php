@@ -139,13 +139,15 @@ final class RoutITAPIClient
     /**
      * @param NewCustomerRequest|null $request
      *
-     * @return NewCustomerResponse|null
+     * @return NinaResponse|null
      * @throws RoutITAPIException
      */
-    public function newCustomer(?NewCustomerRequest $request = null): ?NewCustomerResponse
+    public function newCustomer(?NewCustomerRequest $request = null): ?NinaResponse
     {
-        /** @var NewCustomerResponse|null */
-        return $this->apiCallWithEndpoint($request ?? new NewCustomerRequest(), NewCustomerResponse::class, "/queued");
+        $request = $request ?? new NewCustomerRequest();
+        // $request->validate();
+
+        return $this->apiCallQueued($request);
     }
 
     /**
@@ -345,5 +347,23 @@ final class RoutITAPIClient
         $response = $this->apiClient->request($request, $endpoint);
 
         return $this->apiClient->deserialize($response, $responseClass);
+    }
+
+    /**
+     * Sends a queued request and returns a NinaResponse
+     *
+     * @param object $request
+     * @return NinaResponse|null
+     * @throws RoutITAPIException
+     */
+    protected function apiCallQueued(object $request): ?NinaResponse
+    {
+         try {
+             /** @var NinaResponse */
+            return $this->apiCallWithEndpoint($request, NinaResponse::class, "/queued");
+        } catch (RoutITAPIException $e) {
+            // Re-throw to preserve type correctness
+            throw $e;
+         }
     }
 }

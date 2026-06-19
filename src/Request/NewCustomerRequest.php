@@ -5,11 +5,37 @@ namespace Inserve\RoutITAPI\Request;
 use Inserve\RoutITAPI\Header;
 use Inserve\RoutITAPI\Request\NewCustomerRequest\Enum\CountryCode;
 use Inserve\RoutITAPI\Request\NewCustomerRequest\Enum\LegalStatus;;
+use Inserve\RoutITAPI\Validation\Validator;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 final class NewCustomerRequest extends AbstractRoutITRequest implements RoutITRequestInterface
 {
     protected string $rootNode = 'NewCustomerRequest_V3';
+
+    public function validate(): void
+    {
+        Validator::assertRequiredFieldsPresent($this, [
+            'header', 'name', 'street', 'houseNr', 'zipCode', 'city', 'countryCode', 'phone1', 'email', 'legalStatus'
+        ]);
+        Validator::assertStringLength($this->name, 'Name', 1, 75);
+        Validator::assertStringLength($this->street, 'Street', 1, 100);
+        Validator::assertStringLength($this->zipCode, 'ZipCode', 1, 10);
+        Validator::assertStringLength($this->city, 'City', 1, 50);
+        Validator::assertStringLength($this->phone1, 'Phone1', 1, 20);
+        Validator::assertStringLength($this->email, 'Email', 1, 256);
+        Validator::assertStringLength($this->legalStatus->value, 'LegalStatus', 2, 50);
+
+        Validator::assertOptionalStringLength($this->houseNrExtension, null, 20, 'HouseNrExtension');
+        Validator::assertOptionalStringLength($this->phone2, null, 20, 'Phone2');
+        Validator::assertOptionalStringLength($this->fax, null, 20, 'Fax');
+        Validator::assertOptionalStringLength($this->website, null, 256, 'Website');
+        Validator::assertOptionalStringLength($this->debitNr, null, 20, 'DebitNr');
+        Validator::assertOptionalStringLength($this->iban, null, 50, 'IBAN');
+        Validator::assertOptionalStringLength($this->bic, null, 20, 'BIC');
+        Validator::assertOptionalStringLength($this->vatNr, null, 50, 'VATNr');
+        Validator::assertOptionalStringLength($this->externalId, null, 20, 'ExternalId');
+        Validator::assertOptionalStringLength($this->chamberOfCommerceNr, null, 15, 'ChamberOfCommerceNr');
+    }
 
     #[SerializedName('Header')]
     private ?Header $header = null;

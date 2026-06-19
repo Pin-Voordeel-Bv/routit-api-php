@@ -13,7 +13,7 @@ use Inserve\RoutITAPI\Exception\RoutITAPIException;
 use Inserve\RoutITAPI\Request\MigrateDslOrderRequest;
 use Inserve\RoutITAPI\Request\NewDslOrderRequest;
 use Inserve\RoutITAPI\Request\RoutITRequestInterface;
-use Inserve\RoutITAPI\Response\ErrorResponse;
+use Inserve\RoutITAPI\Response\NinaResponse;
 use Psr\Log\LoggerAwareTrait;
 use SensitiveParameter;
 use Symfony\Component\PropertyAccess\Exception\UnexpectedTypeException;
@@ -138,20 +138,19 @@ final class APIClient
 
             // Still treat NinaResponse as an application error (XML payload)
             if (str_contains($body, self::XML_ERROR_RESPONSE_TAG)) {
-                /** @var ErrorResponse|null $nina */
-                $nina = $this->deserialize($body, ErrorResponse::class);
+                $nina = $this->deserialize($body, NinaResponse::class);
 
-                if ($nina !== null) {
-                    $isSuccess = (bool)($nina->getIsSuccess() ?? false);
-                    $errorCode = (int)($nina->getErrorCode() ?? 0);
-
-                    if (!$isSuccess || $errorCode !== 0) {
-                        throw new RoutITAPIException(
-                            (string)($nina->getErrorMessage() ?? 'Unknown NinaResponse error'),
-                            $errorCode
-                        );
-                    }
+                // Return early if it's a clean success
+                if ($nina instanceof NinaResponse && $nina->isSuccess && $nina->errorCode === 0) {
+                    return $body;
                 }
+
+                    throw new RoutITAPIException(
+                        (string) ($nina->errorMessage ?? 'Unknown NinaResponse error'),
+                        $nina->errorCode ?? 0,
+                        null,
+                        $nina->getErrorDetails()
+                    );
             }
 
             // If upstream returned HTML (e.g., 500 gateway page), fail cleanly
