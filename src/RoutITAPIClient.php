@@ -306,6 +306,7 @@ final class RoutITAPIClient
     public function ftthLineTest(?FtthLineTestRequest $request = null): ?NinaResponse
     {
         $request = $request ?? new FtthLineTestRequest();
+        $request->validate();
 
         return $this->apiCallQueued($request);
     }
