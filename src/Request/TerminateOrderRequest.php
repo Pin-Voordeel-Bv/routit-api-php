@@ -3,6 +3,7 @@
 namespace Inserve\RoutITAPI\Request;
 
 use Inserve\RoutITAPI\Header;
+use Inserve\RoutITAPI\Validation\Validator;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 final class TerminateOrderRequest extends AbstractRoutITRequest implements RoutITRequestInterface
@@ -20,6 +21,31 @@ final class TerminateOrderRequest extends AbstractRoutITRequest implements RoutI
 
     #[SerializedName('TerminateAsSoonAsPossible')]
     private ?bool $terminateAsSoonAsPossible = null;
+
+    public function validate(): void
+    {
+        $errors = [];
+
+        Validator::assertRequiredFieldsPresent($this, ['header', 'orderId', 'desiredTerminateDate'], $errors);
+
+        // OrderId: must start with 'OID' and contain digits after
+        if (property_exists($this, 'orderId')) {
+            if (!preg_match('/^OID[0-9]+$/', $this->orderId ?? '')) {
+                $errors[] = "OrderId must match pattern 'OID[0-9]+'. Given: '{$this->orderId}'";
+            } else {
+                Validator::assertStringLength($this->orderId, 1, null, 'OrderId', $errors);
+            }
+        }
+
+        // DesiredTerminateDate: basic presence is checked above
+        // Note: deeper validation (e.g., "must be before some future date") is done on server/backend
+        // If you want to validate that it's a valid date:
+        if (isset($this->desiredTerminateDate) && !($this->desiredTerminateDate instanceof \DateTimeInterface)) {
+            $errors[] = "DesiredTerminateDate must be a valid date.";
+        }
+
+        Validator::throwIfErrors($errors);
+    }
 
     /**
      * getHeader

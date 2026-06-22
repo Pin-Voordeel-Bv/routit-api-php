@@ -346,6 +346,7 @@ final class RoutITAPIClient
     public function terminateOrder(?TerminateOrderRequest $request = null): ?NinaResponse
     {
         $request = $request ?? new TerminateOrderRequest();
+        $request->validate();
 
         return $this->apiCallQueued($request);
     }
