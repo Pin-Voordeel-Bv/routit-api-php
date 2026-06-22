@@ -46,30 +46,26 @@ final class DslChannel
     #[SerializedName('Password')]
     private ?string $password = null;
 
-    public function validate(): void
+    public function validate(): array
     {
-        Validator::assertRequiredFieldsPresent($this, [
-            'isPrimary', 'productCode', 'subnets'
-        ]);
+        $errors = [];
 
-        Validator::assertStringLength($this->productCode, 1, null, 'productCode');
+        Validator::assertRequiredFieldsPresent($this, ['isPrimary', 'productCode', 'subnets'], $errors);
 
-        if ($this->username !== null) {
-            Validator::assertStringLength($this->username, 6, null, 'username');
-        }
+        Validator::assertStringLength($this->productCode, 1, null, 'ProductCode', $errors);
 
-        if ($this->password !== null) {
-            Validator::assertStringLength($this->password, 6, null, 'password');
-        }
+        Validator::assertOptionalStringLength($this->username, 6, null, 'username', $errors);
+        Validator::assertOptionalStringLength($this->password, 6, null, 'password', $errors);
 
-        // validate subnets if needed
-        if (is_array($this->subnets)) {
-            foreach ($this->subnets as $i => $subnet) {
-                if (method_exists($subnet, 'validate')) {
-                    $subnet->validate();
-                }
+        if (!is_array($this->subnets) && !$this->subnets instanceof \Traversable) {
+            $errors[] = "Property 'subnets' must be iterable.";
+        } else {
+            foreach ($this->subnets as $subnet) {
+                $errors = array_merge($errors, $subnet->validate());
             }
         }
+
+        return $errors;
     }
 
     // Getters / setters

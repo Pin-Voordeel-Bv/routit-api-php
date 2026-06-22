@@ -39,40 +39,26 @@ final class Subnet
     #[Ignore]
     private ?SubnetPriority $subnetPriorityEnum = null;
 
-    public function validate(): void
+    public function validate(): array
     {
-        // Required fields
-        Validator::assertRequiredFieldsPresent($this, ['cidr', 'subnetType']);
+        $errors = [];
 
-        // Optional string with max length (IP address)
-        Validator::assertOptionalStringLength($this->ipAddress, null, 255, 'IpAddress');
+        Validator::assertRequiredFieldsPresent($this, ['cidr', 'subnetType'], $errors);
 
-        // Required: cidr must be present and int, between 24 and 32 per doc (update if needed)
         $allowedCidrs = [32, 30, 29, 28, 27, 26, 25, 24];
-        if (!in_array($this->cidr, $allowedCidrs, true)) {
-            throw new \InvalidArgumentException("CIDR must be one of: " . implode(', ', $allowedCidrs) . ". Given: {$this->cidr}");
+
+        if (!is_int($this->cidr)) {
+            $errors[] = "CIDR must be an integer.";
+        } elseif (!in_array($this->cidr, $allowedCidrs, true)) {
+            $errors[] = "CIDR must be one of: " . implode(', ', $allowedCidrs) . ". Given: {$this->cidr}";
         }
 
-        // Required: subnetType
-        Validator::assertEnumValue(
-            $this->subnetType,
-            ['Unknown', 'Primary', 'Secondary', 'StaticRoute'],
-            'subnetType'
-        );
+        Validator::assertEnumValue($this->subnetType, ['Unknown', 'Primary', 'Secondary', 'StaticRoute'], 'SubnetType', $errors);
 
-        // Optional: ipVersion
-        Validator::assertOptionalEnumValue(
-            $this->ipVersion,
-            ['IPv4', 'IPv6'],
-            'ipVersion'
-        );
+        Validator::assertOptionalEnumValue($this->ipVersion, ['IPv4', 'IPv6'], 'IPVersion', $errors);
+        Validator::assertOptionalEnumValue($this->subnetPriority, ['P90', 'P100', 'P110'], 'SubnetPriority', $errors);
 
-        // Optional: subnetPriority
-        Validator::assertOptionalEnumValue(
-            $this->subnetPriority,
-            ['P90', 'P100', 'P110'],
-            'subnetPriority'
-        );
+        return $errors;
     }
 
     // -------- Getters / setters --------

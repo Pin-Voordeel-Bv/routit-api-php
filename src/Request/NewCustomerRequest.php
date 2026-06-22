@@ -74,27 +74,32 @@ final class NewCustomerRequest extends AbstractRoutITRequest implements RoutITRe
 
     public function validate(): void
     {
+        $errors = [];
+
         Validator::assertRequiredFieldsPresent($this, [
             'header', 'name', 'street', 'houseNr', 'zipCode', 'city', 'countryCode', 'phone1', 'email', 'legalStatus'
-        ]);
-        Validator::assertStringLength($this->name, 'Name', 1, 75);
-        Validator::assertStringLength($this->street, 'Street', 1, 100);
-        Validator::assertStringLength($this->zipCode, 'ZipCode', 1, 10);
-        Validator::assertStringLength($this->city, 'City', 1, 50);
-        Validator::assertStringLength($this->phone1, 'Phone1', 1, 20);
-        Validator::assertStringLength($this->email, 'Email', 1, 256);
-        Validator::assertStringLength($this->legalStatus->value, 'LegalStatus', 2, 50);
+        ], $errors);
 
-        Validator::assertOptionalStringLength($this->houseNrExtension, null, 20, 'HouseNrExtension');
-        Validator::assertOptionalStringLength($this->phone2, null, 20, 'Phone2');
-        Validator::assertOptionalStringLength($this->fax, null, 20, 'Fax');
-        Validator::assertOptionalStringLength($this->website, null, 256, 'Website');
-        Validator::assertOptionalStringLength($this->debitNr, null, 20, 'DebitNr');
-        Validator::assertOptionalStringLength($this->iban, null, 50, 'IBAN');
-        Validator::assertOptionalStringLength($this->bic, null, 20, 'BIC');
-        Validator::assertOptionalStringLength($this->vatNr, null, 50, 'VATNr');
-        Validator::assertOptionalStringLength($this->externalId, null, 20, 'ExternalId');
-        Validator::assertOptionalStringLength($this->chamberOfCommerceNr, null, 15, 'ChamberOfCommerceNr');
+        Validator::assertStringLength($this->name, 1, 75, 'Name', $errors);
+        Validator::assertStringLength($this->street, 1, 100, 'Street', $errors);
+        Validator::assertStringLength($this->zipCode, 1, 10, 'ZipCode', $errors);
+        Validator::assertStringLength($this->city, 1, 50, 'City', $errors);
+        Validator::assertStringLength($this->phone1, 1, 20, 'Phone1', $errors);
+        Validator::assertStringLength($this->email, 1, 256, 'Email', $errors);
+        Validator::assertStringLength($this->legalStatus, 2, 50, 'LegalStatus', $errors);
+
+        Validator::assertOptionalStringLength($this->houseNrExtension, null, 20, 'HouseNrExtension', $errors);
+        Validator::assertOptionalStringLength($this->phone2, null, 20, 'Phone2', $errors);
+        Validator::assertOptionalStringLength($this->fax, null, 20, 'Fax', $errors);
+        Validator::assertOptionalStringLength($this->website, null, 256, 'Website', $errors);
+        Validator::assertOptionalStringLength($this->debitNr, null, 20, 'DebitNr', $errors);
+        Validator::assertOptionalStringLength($this->iBAN, null, 50, 'IBAN', $errors);
+        Validator::assertOptionalStringLength($this->bIC, null, 20, 'BIC', $errors);
+        Validator::assertOptionalStringLength($this->vATNr, null, 50, 'VATNr', $errors);
+        Validator::assertOptionalStringLength($this->externalId, null, 20, 'ExternalId', $errors);
+        Validator::assertOptionalStringLength($this->chamberOfCommerceNr, null, 15, 'ChamberOfCommerceNr', $errors);
+
+        Validator::throwIfErrors($errors);
     }
 
     // ───────────────── Header ─────────────────

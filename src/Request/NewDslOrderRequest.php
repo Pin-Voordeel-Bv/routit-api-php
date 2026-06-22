@@ -145,54 +145,42 @@ final class NewDslOrderRequest extends AbstractRoutITRequest implements RoutITRe
 
     public function validate(): void
     {
+        $errors = [];
+
         Validator::assertRequiredFieldsPresent($this, [
-            'header',
-            'customerId',
-            'companyName',
-            'contactPerson',
-            'contactPhoneNumber',
-            'hasBroadband',
-            'hasPhone',
-            'maxNLS',
-            'keepVoice',
-            'outletRequired',
-            'contractHouseNumber',
-            'contractZipCode',
-            'channels',
-            'useCustomTechnician',
-        ]);
+            'header', 'customerId', 'companyName', 'contactPerson', 'contactPhoneNumber',
+            'hasBroadband', 'hasPhone', 'maxNls', 'keepVoice', 'outletRequired',
+            'contractHouseNumber', 'contractZipCode', 'channels', 'useCustomTechnician'
+        ], $errors);
 
-        Validator::assertStringLength($this->companyName, 1, null, 'companyName');
-        Validator::assertStringLength($this->contactPerson, 1, 50, 'contactPerson');
-        Validator::assertStringLength($this->contactPhoneNumber, 1, null, 'contactPhoneNumber');
-        Validator::assertStringLength($this->contractZipCode, 1, null, 'contractZipCode');
+        Validator::assertStringLength($this->companyName, 1, null, 'CompanyName', $errors);
+        Validator::assertStringLength($this->contactPerson, 1, 50, 'ContactPerson', $errors);
+        Validator::assertStringLength($this->contactPhoneNumber, 1, null, 'ContactPhoneNumber', $errors);
+        Validator::assertStringLength($this->contractZipCode, 1, null, 'ContractZipCode', $errors);
 
-        Validator::assertOptionalStringLength($this->phoneNumber, null, null, 'phoneNumber');
-        Validator::assertOptionalStringLength($this->serviceId, null, null, 'serviceId');
-        Validator::assertOptionalStringLength($this->label, null, null, 'label');
-        Validator::assertOptionalStringLength($this->contractHouseNumberExt, null, 20, 'contractHouseNumberExt');
-        Validator::assertOptionalStringLength($this->modemType, null, null, 'modemType');
-        Validator::assertOptionalStringLength($this->modemMacAddress, null, null, 'modemMacAddress');
-        Validator::assertOptionalStringLength($this->modemSerialNumber, null, null, 'modemSerialNumber');
-        Validator::assertOptionalStringLength($this->appointmentId, null, 16, 'appointmentId');
-        Validator::assertOptionalStringLength($this->contactEmail, null, 256, 'contactEmail');
-        Validator::assertOptionalStringLength($this->contact2Name, null, 50, 'contact2Name');
-        Validator::assertOptionalStringLength($this->contact2PhoneNumber, null, 10, 'contact2PhoneNumber');
-        Validator::assertOptionalStringLength($this->contact2Email, null, 256, 'contact2Email');
-        Validator::assertOptionalStringLength($this->ontSerialNumber, null, 16, 'ontSerialNumber');
-        Validator::assertOptionalStringLength($this->serviceGroup, null, 20, 'serviceGroup');
-        Validator::assertOptionalStringLength($this->installerId, null, null, 'installerId');
+        Validator::assertOptionalStringLength($this->phoneNumber, null, 20, 'PhoneNumber', $errors);
+        Validator::assertOptionalStringLength($this->serviceId, null, null, 'ServiceID', $errors);
+        Validator::assertOptionalStringLength($this->label, null, null, 'Label', $errors);
+        Validator::assertOptionalStringLength($this->contractHouseNumberExt, null, 20, 'ContractHouseNumberExt', $errors);
+        Validator::assertOptionalStringLength($this->modemMacAddress, null, null, 'ModemMacAddress', $errors);
+        Validator::assertOptionalStringLength($this->modemSerialNumber, null, null, 'ModemSerialNumber', $errors);
+        Validator::assertOptionalStringLength($this->appointmentId, null, 16, 'AppointmentId', $errors);
+        Validator::assertOptionalStringLength($this->contactEmail, null, 256, 'ContactEmail', $errors);
+        Validator::assertOptionalStringLength($this->contact2Name, null, 50, 'Contact2Name', $errors);
+        Validator::assertOptionalStringLength($this->contact2PhoneNumber, null, 10, 'Contact2PhoneNumber', $errors);
+        Validator::assertOptionalStringLength($this->contact2Email, null, 256, 'Contact2Email', $errors);
+        Validator::assertOptionalStringLength($this->ontSerialNumber, null, 16, 'OntSerialNumber', $errors);
+        Validator::assertOptionalStringLength($this->serviceGroup, null, 20, 'ServiceGroup', $errors);
 
-        // Validate all DSL channels
         if (!is_array($this->channels) && !$this->channels instanceof \Traversable) {
-            throw new \InvalidArgumentException("Property 'channels' must be iterable.");
-        }
-        foreach ($this->channels as $index => $channel) {
-            if (!method_exists($channel, 'validate')) {
-                throw new \InvalidArgumentException("Channel at index $index is not validatable.");
+            $errors[] = "Property 'channels' must be iterable.";
+        } else {
+            foreach ($this->channels as $channel) {
+                $errors = array_merge($errors, $channel->validate());
             }
-            $channel->validate();
         }
+
+        Validator::throwIfErrors($errors);
     }
 
     // ───────── Header ─────────
