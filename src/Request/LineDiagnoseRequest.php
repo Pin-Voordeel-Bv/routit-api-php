@@ -4,6 +4,7 @@ namespace Inserve\RoutITAPI\Request;
 
 use Inserve\RoutITAPI\Header;
 use Inserve\RoutITAPI\Request\LineDiagnoseRequest\Enum\SymptomCode;
+use Inserve\RoutITAPI\Validation\Validator;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 final class LineDiagnoseRequest extends AbstractRoutITRequest implements RoutITRequestInterface
@@ -21,6 +22,22 @@ final class LineDiagnoseRequest extends AbstractRoutITRequest implements RoutITR
      */
     #[SerializedName('SymptomCode')]
     private string $symptomCode;
+
+    public function validate(): void
+    {
+        $errors = [];
+
+        Validator::assertRequiredFieldsPresent($this, ['orderId'], $errors);
+
+        Validator::assertEnumValue(
+            $this->symptomCode ?? '',
+            ['Sym103', 'Sym104', 'Sym105', 'Sym111'],
+            'SymptomCode',
+            $errors
+        );
+
+        Validator::throwIfErrors($errors);
+    }
 
     // ───────── Header ─────────
 

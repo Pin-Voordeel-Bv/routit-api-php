@@ -3,6 +3,7 @@
 namespace Inserve\RoutITAPI\Request;
 
 use Inserve\RoutITAPI\Header;
+use Inserve\RoutITAPI\Validation\Validator;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 final class LineCheckRequest extends AbstractRoutITRequest implements RoutITRequestInterface
@@ -17,6 +18,15 @@ final class LineCheckRequest extends AbstractRoutITRequest implements RoutITRequ
 
     #[SerializedName('OrderId')]
     private int $orderId;
+
+    public function validate(): void
+    {
+        $errors = [];
+
+        Validator::assertRequiredFieldsPresent($this, ['orderId'], $errors);
+
+        Validator::throwIfErrors($errors);
+    }
 
     // ───────── Header ─────────
 

@@ -320,6 +320,7 @@ final class RoutITAPIClient
     public function lineCheck(?LineCheckRequest $request = null): ?NinaResponse
     {
         $request = $request ?? new LineCheckRequest();
+        $request->validate();
 
         return $this->apiCallQueued($request);
     }
@@ -333,6 +334,7 @@ final class RoutITAPIClient
     public function lineDiagnose(?LineDiagnoseRequest $request = null): ?NinaResponse
     {
         $request = $request ?? new LineDiagnoseRequest();
+        $request->validate();
 
         return $this->apiCallQueued($request);
     }
