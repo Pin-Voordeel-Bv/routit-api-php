@@ -11,6 +11,34 @@ use Symfony\Component\Serializer\Attribute\Ignore;
 
 final class Subnet
 {
+    #[SerializedName('IpAddress')]
+    private ?string $ipAddress = null;
+
+    #[SerializedName('Cidr')]
+    private ?int $cidr = null;
+
+    // ───── SubnetType as string for XML ─────
+    #[SerializedName('SubnetType')]
+    private ?string $subnetType = null;
+
+    // enum only for your own code, NOT serialized
+    #[Ignore]
+    private ?SubnetType $subnetTypeEnum = null;
+
+    // ───── IPVersion as string for XML ─────
+    #[SerializedName('IPVersion')]
+    private ?string $ipVersion = null;
+
+    #[Ignore]
+    private ?IPVersion $ipVersionEnum = null;
+
+    // ───── SubnetPriority as string for XML ─────
+    #[SerializedName('SubnetPriority')]
+    private ?string $subnetPriority = null;
+
+    #[Ignore]
+    private ?SubnetPriority $subnetPriorityEnum = null;
+
     public function validate(): void
     {
         // Required fields
@@ -46,34 +74,6 @@ final class Subnet
             'subnetPriority'
         );
     }
-
-    #[SerializedName('IpAddress')]
-    private ?string $ipAddress = null;
-
-    #[SerializedName('Cidr')]
-    private ?int $cidr = null;
-
-    // ───── SubnetType as string for XML ─────
-    #[SerializedName('SubnetType')]
-    private ?string $subnetType = null;
-
-    // enum only for your own code, NOT serialized
-    #[Ignore]
-    private ?SubnetType $subnetTypeEnum = null;
-
-    // ───── IPVersion as string for XML ─────
-    #[SerializedName('IPVersion')]
-    private ?string $ipVersion = null;
-
-    #[Ignore]
-    private ?IPVersion $ipVersionEnum = null;
-
-    // ───── SubnetPriority as string for XML ─────
-    #[SerializedName('SubnetPriority')]
-    private ?string $subnetPriority = null;
-
-    #[Ignore]
-    private ?SubnetPriority $subnetPriorityEnum = null;
 
     // -------- Getters / setters --------
 

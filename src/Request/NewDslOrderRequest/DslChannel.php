@@ -9,32 +9,6 @@ use Symfony\Component\Serializer\Attribute\SerializedPath;
 
 final class DslChannel
 {
-    public function validate(): void
-    {
-        Validator::assertRequiredFieldsPresent($this, [
-            'isPrimary', 'productCode', 'subnets'
-        ]);
-
-        Validator::assertStringLength($this->productCode, 1, null, 'productCode');
-
-        if ($this->username !== null) {
-            Validator::assertStringLength($this->username, 6, null, 'username');
-        }
-
-        if ($this->password !== null) {
-            Validator::assertStringLength($this->password, 6, null, 'password');
-        }
-
-        // validate subnets if needed
-        if (is_array($this->subnets)) {
-            foreach ($this->subnets as $i => $subnet) {
-                if (method_exists($subnet, 'validate')) {
-                    $subnet->validate();
-                }
-            }
-        }
-    }
-
     #[SerializedName('IsPrimary')]
     private ?bool $isPrimary = null;
 
@@ -71,6 +45,32 @@ final class DslChannel
 
     #[SerializedName('Password')]
     private ?string $password = null;
+
+    public function validate(): void
+    {
+        Validator::assertRequiredFieldsPresent($this, [
+            'isPrimary', 'productCode', 'subnets'
+        ]);
+
+        Validator::assertStringLength($this->productCode, 1, null, 'productCode');
+
+        if ($this->username !== null) {
+            Validator::assertStringLength($this->username, 6, null, 'username');
+        }
+
+        if ($this->password !== null) {
+            Validator::assertStringLength($this->password, 6, null, 'password');
+        }
+
+        // validate subnets if needed
+        if (is_array($this->subnets)) {
+            foreach ($this->subnets as $i => $subnet) {
+                if (method_exists($subnet, 'validate')) {
+                    $subnet->validate();
+                }
+            }
+        }
+    }
 
     // Getters / setters
 
