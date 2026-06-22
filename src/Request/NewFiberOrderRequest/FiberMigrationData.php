@@ -3,6 +3,7 @@
 namespace Inserve\RoutITAPI\Request\NewFiberOrderRequest;
 
 use Inserve\RoutITAPI\Enum\DonorWsoCode;
+use Inserve\RoutITAPI\Validation\Validator;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 final class FiberMigrationData
@@ -18,6 +19,19 @@ final class FiberMigrationData
 
     #[SerializedName('CompanyName')]
     private ?string $companyName = null;
+
+    public function validate(): array
+    {
+        $errors = [];
+
+        Validator::assertRequiredFieldsPresent($this, ['isDuringOfficeHours'], $errors);
+
+        Validator::assertOptionalStringLength($this->accessId, null, 50, 'AccessId', $errors);
+        Validator::assertOptionalStringLength($this->donorWsoCode, null, 20, 'DonorWsoCode', $errors);
+        Validator::assertOptionalStringLength($this->companyName, null, 100, 'CompanyName', $errors);
+
+        return $errors;
+    }
 
     // ───────────── AccessId ─────────────
     public function getAccessId(): ?string

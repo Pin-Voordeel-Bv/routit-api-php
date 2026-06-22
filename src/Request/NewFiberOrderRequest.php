@@ -7,6 +7,7 @@ use Inserve\RoutITAPI\Request\NewFiberOrderRequest\FiberAccessData;
 use Inserve\RoutITAPI\Request\NewFiberOrderRequest\FiberMigrationData;
 use Inserve\RoutITAPI\Request\NewFiberOrderRequest\NewFiberRequestData;
 use Inserve\RoutITAPI\Request\NewFiberOrderRequest\NewVlanFiberRequestData;
+use Inserve\RoutITAPI\Validation\Validator;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 final class NewFiberOrderRequest extends AbstractRoutITRequest implements RoutITRequestInterface
@@ -33,6 +34,30 @@ final class NewFiberOrderRequest extends AbstractRoutITRequest implements RoutIT
 
     #[SerializedName('FiberAccessData')]
     private ?FiberAccessData $fiberAccessData = null;
+
+    public function validate(): void
+    {
+        $errors = [];
+
+        Validator::assertRequiredFieldsPresent($this, ['header', 'customerId', 'productId', 'fiberRequestData'], $errors);
+        Validator::assertStringLength((string) $this->productId, 1, 13, 'ProductId', $errors);
+
+        if ($this->fiberRequestData) {
+            $this->fiberRequestData->validate($errors);
+        }
+
+        if ($this->firstNewVlan) {
+            $this->firstNewVlan->validate($errors);
+        }
+
+        if ($this->fiberMigrationData) {
+            $this->fiberMigrationData->validate($errors);
+        }
+
+        if ($this->fiberAccessData) {
+            $this->fiberAccessData->validate($errors);
+        }
+    }
 
     /**
      * getHeader

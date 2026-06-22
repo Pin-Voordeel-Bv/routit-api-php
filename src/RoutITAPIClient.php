@@ -185,6 +185,7 @@ final class RoutITAPIClient
     public function newFiberOrder(?NewFiberOrderRequest $request = null): ?NinaResponse
     {
         $request = $request ?? new NewFiberOrderRequest();
+        $request->validate();
 
         return $this->apiCallQueued($request);
     }

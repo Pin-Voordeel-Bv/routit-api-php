@@ -3,6 +3,7 @@
 namespace Inserve\RoutITAPI\Request\NewFiberOrderRequest;
 
 // use Inserve\RoutITAPI\Request\NewFiberOrderRequest\DaysAvailable;
+use Inserve\RoutITAPI\Validation\Validator;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Serializer\Attribute\SerializedPath;
 
@@ -47,6 +48,19 @@ final class FiberSurveyData
 
     #[SerializedName('IsITDataCenter')]
     private string $isITDataCenter;
+
+    public function validate(): array
+    {
+        $errors = [];
+
+        Validator::assertRequiredFieldsPresent($this, [
+            'whereDoesItEnterBuilding', 'isFiberOnIsra', 'doesItContinueToPatchPanel',
+            'selfConnecting', 'isPatchInSameRoomAsDevice', 'deviceLocation', 'daysAvailable',
+            'morningAfternoon', 'newBuildLocation', 'isITDataCenter'
+        ], $errors);
+
+        return $errors;
+    }
 
     // ────────────────────────────── GETTERS ──────────────────────────────
 

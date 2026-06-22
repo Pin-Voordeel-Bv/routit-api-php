@@ -4,6 +4,7 @@ namespace Inserve\RoutITAPI\Request\NewFiberOrderRequest;
 
 use Inserve\RoutITAPI\Request\NewFiberOrderRequest\FullAddress;
 use Inserve\RoutITAPI\Request\NewFiberOrderRequest\FiberSurveyData;
+use Inserve\RoutITAPI\Validation\Validator;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 final class NewFiberRequestData
@@ -34,6 +35,30 @@ final class NewFiberRequestData
 
     #[SerializedName('FiberSurveyData')]
     private ?FiberSurveyData $fiberSurveyData = null;
+
+    public function validate(): array
+    {
+        $errors = [];
+
+        Validator::assertRequiredFieldsPresent($this, [
+            'address', 'company', 'contactPersonName', 'contactPersonPhoneNumber', 'contactPersonEmailAddress'
+        ], $errors);
+
+        if (isset($this->address)) {
+            $errors = array_merge($errors, $this->address->validate());
+        } else {
+            $errors[] = "Required property 'address' is not initialized.";
+        }
+
+        Validator::assertOptionalStringLength($this->contactPerson2PhoneNumber, null, 10, 'ContactPerson2PhoneNumber', $errors);
+        Validator::assertOptionalStringLength($this->contactPerson2EmailAddress, null, 256, 'ContactPerson2EmailAddress', $errors);
+
+        if ($this->fiberSurveyData) {
+            $errors = array_merge($errors, $this->fiberSurveyData->validate());
+        }
+
+        return $errors;
+    }
 
     // --- Getters & Setters ---
     public function getAddress(): FullAddress { return $this->address; }

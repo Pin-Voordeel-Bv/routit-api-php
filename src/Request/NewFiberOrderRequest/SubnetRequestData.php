@@ -4,6 +4,7 @@ namespace Inserve\RoutITAPI\Request\NewFiberOrderRequest;
 
 use Inserve\RoutITAPI\Enum\SubnetType;
 use Inserve\RoutITAPI\Enum\SubnetPriority;
+use Inserve\RoutITAPI\Validation\Validator;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 final class SubnetRequestData
@@ -20,6 +21,27 @@ final class SubnetRequestData
 
     #[SerializedName('SubnetPriority')]
     private ?string $subnetPriority = null;
+
+    public function validate(): array
+    {
+        $errors = [];
+
+        Validator::assertRequiredFieldsPresent($this, ['cidr', 'subnetType'], $errors);
+
+        if (!is_int($this->cidr)) {
+            $errors[] = "CIDR must be an integer.";
+        } elseif (!in_array($this->cidr, [24, 25, 26, 27, 28, 29, 30, 32], true)) {
+            $errors[] = "CIDR must be one of: 24, 25, 26, 27, 28, 29, 30, 32. Given: {$this->cidr}";
+        }
+
+        Validator::assertOptionalStringLength($this->ipAddress, null, 255, 'IPAddress', $errors);
+
+        Validator::assertEnumValue($this->subnetType, ['Unknown', 'Primary', 'Secondary', 'StaticRoute'], 'SubnetType', $errors);
+
+        Validator::assertOptionalEnumValue($this->subnetPriority, ['P90', 'P100', 'P110'], 'SubnetPriority', $errors);
+
+        return $errors;
+    }
 
     public function getCidr(): ?int
     {

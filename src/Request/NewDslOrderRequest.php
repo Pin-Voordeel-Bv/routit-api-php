@@ -159,11 +159,7 @@ final class NewDslOrderRequest extends AbstractRoutITRequest implements RoutITRe
         Validator::assertStringLength($this->contractZipCode, 1, null, 'ContractZipCode', $errors);
 
         Validator::assertOptionalStringLength($this->phoneNumber, null, 20, 'PhoneNumber', $errors);
-        Validator::assertOptionalStringLength($this->serviceId, null, null, 'ServiceID', $errors);
-        Validator::assertOptionalStringLength($this->label, null, null, 'Label', $errors);
         Validator::assertOptionalStringLength($this->contractHouseNumberExt, null, 20, 'ContractHouseNumberExt', $errors);
-        Validator::assertOptionalStringLength($this->modemMacAddress, null, null, 'ModemMacAddress', $errors);
-        Validator::assertOptionalStringLength($this->modemSerialNumber, null, null, 'ModemSerialNumber', $errors);
         Validator::assertOptionalStringLength($this->appointmentId, null, 16, 'AppointmentId', $errors);
         Validator::assertOptionalStringLength($this->contactEmail, null, 256, 'ContactEmail', $errors);
         Validator::assertOptionalStringLength($this->contact2Name, null, 50, 'Contact2Name', $errors);

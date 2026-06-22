@@ -28,14 +28,24 @@ class Validator
         $ref = new \ReflectionClass($obj);
         foreach ($requiredFields as $field) {
             if (!$ref->hasProperty($field)) {
-                $errors[] = "Missing required property '$field' on " . get_class($obj);
+                $errors[] = "Missing required property '$field' on " . get_class($obj) . ".";
                 continue;
             }
             $prop = $ref->getProperty($field);
             $prop->setAccessible(true);
-            $val = $prop->getValue($obj);
-            if ($val === null || (is_string($val) && trim($val) === '')) {
-                $errors[] = "Required property '$field' is null or empty.";
+            $isInitialized = PHP_VERSION_ID >= 70400 ? $prop->isInitialized($obj) : true;
+            if (!$isInitialized) {
+                $errors[] = "Required property '$field' is not initialized.";
+                continue;
+            }
+
+            try {
+                $val = $prop->getValue($obj);
+                if ($val === null || (is_string($val) && trim($val) === '')) {
+                    $errors[] = "Required property '$field' is null or empty.";
+                }
+            } catch (\Error $e) {
+                $errors[] = "Failed to access property '$field': " . $e->getMessage();
             }
         }
     }
@@ -76,5 +86,26 @@ class Validator
         if (!empty($errors)) {
             throw new RoutITAPIException("Validation error(s)", 0, null, $errors);
         }
+    }
+
+    private function get_class_name($classname)
+    {
+        if ($pos = strrpos($classname, '\\')) return substr($classname, $pos + 1);
+        return $pos;
+    }
+
+    public static function isInitialized(object $obj, string $property): bool
+    {
+        $ref = new \ReflectionClass($obj);
+        if (!$ref->hasProperty($property)) {
+            return false;
+        }
+
+        $prop = $ref->getProperty($property);
+        if (PHP_VERSION_ID >= 70400 && !$prop->isInitialized($obj)) {
+            return false;
+        }
+
+        return true;
     }
 }

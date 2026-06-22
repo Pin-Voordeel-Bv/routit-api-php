@@ -3,6 +3,7 @@
 namespace Inserve\RoutITAPI\Request\NewFiberOrderRequest;
 
 use Inserve\RoutITAPI\Request\NewFiberOrderRequest\SubnetRequestData;
+use Inserve\RoutITAPI\Validation\Validator;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Serializer\Attribute\SerializedPath;
 
@@ -29,6 +30,21 @@ final class NewVlanFiberRequestData
 
     #[SerializedName('PerformIPMigration')]
     private ?bool $performIPMigration = null;
+
+    public function validate(): array
+    {
+        $errors = [];
+
+        if (!is_array($this->subnets)) {
+            $errors[] = "Subnets must be an array.";
+        } else {
+            foreach ($this->subnets as $subnet) {
+                $errors = array_merge($errors, $subnet->validate());
+            }
+        }
+
+        return $errors;
+    }
 
     /**
      * @return SubnetRequestData[]

@@ -4,6 +4,7 @@ namespace Inserve\RoutITAPI\Request\NewFiberOrderRequest;
 
 use DateTimeImmutable;
 use DateTimeInterface;
+use Inserve\RoutITAPI\Validation\Validator;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 final class FiberAccessData
@@ -25,6 +26,18 @@ final class FiberAccessData
 
     #[SerializedName('FiberQuotationId')]
     private ?int $fiberQuotationId = null;
+
+    public function validate(): array
+    {
+        $errors = [];
+
+        Validator::assertRequiredFieldsPresent($this, ['customerWishDate', 'cpeType', 'ckrAccess'], $errors);
+
+        Validator::assertOptionalStringLength($this->serviceId, null, 50, 'ServiceId', $errors);
+        Validator::assertOptionalStringLength($this->eanId, null, 50, 'EanId', $errors);
+
+        return $errors;
+    }
 
     // ───────── ServiceId ─────────
 
