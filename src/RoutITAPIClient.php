@@ -153,61 +153,67 @@ final class RoutITAPIClient
     /**
      * @param ModifyCustomerRequest|null $request
      *
-     * @return ModifyCustomerResponse|null
+     * @return NinaResponse|null
      * @throws RoutITAPIException
      */
-    public function modifyCustomer(?ModifyCustomerRequest $request = null): ?ModifyCustomerResponse
+    public function modifyCustomer(?ModifyCustomerRequest $request = null): ?NinaResponse
     {
-        /** @var ModifyCustomerResponse|null */
-        return $this->apiCallWithEndpoint($request ?? new ModifyCustomerRequest(), ModifyCustomerResponse::class, "/queued");
+        $request = $request ?? new ModifyCustomerRequest();
+
+        return $this->apiCallQueued($request);
     }
 
     /**
      * @param DeactivateCustomerRequest|null $request
      *
-     * @return DeactivateCustomerResponse|null
+     * @return NinaResponse|null
      * @throws RoutITAPIException
      */
-    public function deactivateCustomer(?DeactivateCustomerRequest $request = null): ?DeactivateCustomerResponse
+    public function deactivateCustomer(?DeactivateCustomerRequest $request = null): ?NinaResponse
     {
-        /** @var DeactivateCustomerResponse|null */
-        return $this->apiCallWithEndpoint($request ?? new DeactivateCustomerRequest(), DeactivateCustomerResponse::class, "/queued");
+        $request = $request ?? new DeactivateCustomerRequest();
+
+        return $this->apiCallQueued($request);
     }
 
     /**
      * @param NewFiberOrderRequest|null $request
      *
-     * @return FiberOrderResponse|null
+     * @return NinaResponse|null
      * @throws RoutITAPIException
      */
-    public function newFiberOrder(?NewFiberOrderRequest $request = null): ?FiberOrderResponse
+    public function newFiberOrder(?NewFiberOrderRequest $request = null): ?NinaResponse
     {
-        /** @var NewFiberOrderResponse|null */
-        return $this->apiCallWithEndpoint($request ?? new NewFiberOrderRequest(), FiberOrderResponse::class, "/queued");
+        $request = $request ?? new NewFiberOrderRequest();
+
+        return $this->apiCallQueued($request);
     }
 
-    public function modifyFiberOrder(?ModifyFiberOrderRequest $request = null): ?FiberOrderResponse
+    public function modifyFiberOrder(?ModifyFiberOrderRequest $request = null): ?NinaResponse
     {
-        /** @var FiberOrderResponse|null */
-        return $this->apiCallWithEndpoint($request ?? new ModifyFiberOrderRequest(), FiberOrderResponse::class, "/queued");
+        $request = $request ?? new ModifyFiberOrderRequest();
+
+        return $this->apiCallQueued($request);
     }
 
     /**
      * @param NewVlanFiberOrderRequest|null $request
      *
-     * @return VlanFiberOrderResponse|null
+     * @return NinaResponse|null
      * @throws RoutITAPIException
      */
-    public function newVlanFiberOrder(?NewVlanFiberOrderRequest $request = null): ?VlanFiberOrderResponse
+    public function newVlanFiberOrder(?NewVlanFiberOrderRequest $request = null): ?NinaResponse
     {
-        /** @var NewVlanFiberOrderResponse|null */
-        return $this->apiCallWithEndpoint($request ?? new NewVlanFiberOrderRequest(), VlanFiberOrderResponse::class, "/queued");
+        $request = $request ?? new NewVlanFiberOrderRequest();
+
+        return $this->apiCallQueued($request);
     }
 
-    public function modifyVlanFiber(?ModifyVlanFiberRequest $request = null): ?VlanFiberOrderResponse
+    public function modifyVlanFiber(?ModifyVlanFiberRequest $request = null): ?NinaResponse
     {
-        /** @var VlanFiberOrderResponse|null */
-        return $this->apiCallWithEndpoint($request ?? new ModifyVlanFiberRequest(), VlanFiberOrderResponse::class, "/queued");
+        $request = $request ?? new ModifyVlanFiberRequest();
+
+        return $this->apiCallQueued($request);
     }
 
     /**
@@ -227,109 +233,118 @@ final class RoutITAPIClient
     /**
      * @param ModifyDslOrderRequest|null $request
      *
-     * @return DslOrderData|null
+     * @return NinaResponse|null
      * @throws RoutITAPIException
      */
-    public function modifyDslOrder(?ModifyDslOrderRequest $request = null): ?DslOrderUpdate
+    public function modifyDslOrder(?ModifyDslOrderRequest $request = null): ?NinaResponse
     {
-        /** @var DslOrderUpdate|null */
-        return $this->apiCallWithEndpoint($request ?? new ModifyDslOrderRequest(), DslOrderUpdate::class, "/queued");
+        $request = $request ?? new ModifyDslOrderRequest();
+
+        return $this->apiCallQueued($request);
     }
 
     /**
      * @param MigrateDslOrderRequest|null $request
      *
-     * @return MigrateDslOrderResponse|null
+     * @return NinaResponse|null
      * @throws RoutITAPIException
      */
-    public function migrateDslOrder(?MigrateDslOrderRequest $request = null): ?MigrateDslOrderResponse
+    public function migrateDslOrder(?MigrateDslOrderRequest $request = null): ?NinaResponse
     {
-        /** @var MigrateDslOrderResponse|null */
-        return $this->apiCallWithEndpoint($request ?? new MigrateDslOrderRequest(), MigrateDslOrderResponse::class, "/queued");
+        $request = $request ?? new MigrateDslOrderRequest();
+
+        return $this->apiCallQueued($request);
     }
 
     /**
      * @param RePlanDslOrderRequest|null $request
      *
-     * @return RePlanDslOrderResponse|null
+     * @return NinaResponse|null
      * @throws RoutITAPIException
      */
-    public function rePlanDslOrder(?RePlanDslOrderRequest $request = null): ?RePlanDslOrderResponse
+    public function rePlanDslOrder(?RePlanDslOrderRequest $request = null): ?NinaResponse
     {
-        /** @var RePlanDslOrderResponse|null */
-        return $this->apiCallWithEndpoint($request ?? new RePlanDslOrderRequest(), RePlanDslOrderResponse::class, "/queued");
+        $request = $request ?? new RePlanDslOrderRequest();
+
+        return $this->apiCallQueued($request);
     }
 
     /**
      * @param UpgradeDslOrderRequest|null $request
      *
-     * @return UpgradeDslOrderResponse|null
+     * @return NinaResponse|null
      * @throws RoutITAPIException
      */
-    public function upgradeDslOrder(?UpgradeDslOrderRequest $request = null): ?UpgradeDslOrderResponse
+    public function upgradeDslOrder(?UpgradeDslOrderRequest $request = null): ?NinaResponse
     {
-        /** @var UpgradeDslOrderResponse|null */
-        return $this->apiCallWithEndpoint($request ?? new UpgradeDslOrderRequest(), UpgradeDslOrderResponse::class, "/queued");
+        $request = $request ?? new UpgradeDslOrderRequest();
+
+        return $this->apiCallQueued($request);
     }
 
     /**
      * @param UpgradeOrderRequest|null $request
      *
-     * @return UpgradeOrderResponse|null
+     * @return NinaResponse|null
      * @throws RoutITAPIException
      */
-    public function upgradeOrder(?UpgradeOrderRequest $request = null): ?UpgradeOrderResponse
+    public function upgradeOrder(?UpgradeOrderRequest $request = null): ?NinaResponse
     {
-        /** @var UpgradeOrderResponse|null */
-        return $this->apiCallWithEndpoint($request ?? new UpgradeOrderRequest(), UpgradeOrderResponse::class, "/queued");
+        $request = $request ?? new UpgradeOrderRequest();
+
+        return $this->apiCallQueued($request);
     }
 
     /**
      * @param FtthLineTestRequest|null $request
      *
-     * @return FtthLineTestResponse|null
+     * @return NinaResponse|null
      * @throws RoutITAPIException
      */
-    public function ftthLineTest(?FtthLineTestRequest $request = null): ?FtthLineTestResponse
+    public function ftthLineTest(?FtthLineTestRequest $request = null): ?NinaResponse
     {
-        /** @var FtthLineTestResponse|null */
-        return $this->apiCallWithEndpoint($request ?? new FtthLineTestRequest(), FtthLineTestResponse::class, "/queued");
+        $request = $request ?? new FtthLineTestRequest();
+
+        return $this->apiCallQueued($request);
     }
 
     /**
      * @param LineCheckRequest|null $request
      *
-     * @return LineCheckResponse|null
+     * @return NinaResponse|null
      * @throws RoutITAPIException
      */
-    public function lineCheck(?LineCheckRequest $request = null): ?LineCheckResponse
+    public function lineCheck(?LineCheckRequest $request = null): ?NinaResponse
     {
-        /** @var LineCheckResponse|null */
-        return $this->apiCallWithEndpoint($request ?? new LineCheckRequest(), LineCheckResponse::class, "/queued");
+        $request = $request ?? new LineCheckRequest();
+
+        return $this->apiCallQueued($request);
     }
 
     /**
      * @param LineDiagnoseRequest|null $request
      *
-     * @return LineDiagnoseResponse|null
+     * @return NinaResponse|null
      * @throws RoutITAPIException
      */
-    public function lineDiagnose(?LineDiagnoseRequest $request = null): ?LineDiagnoseResponse
+    public function lineDiagnose(?LineDiagnoseRequest $request = null): ?NinaResponse
     {
-        /** @var LineDiagnoseResponse|null */
-        return $this->apiCallWithEndpoint($request ?? new LineDiagnoseRequest(), LineDiagnoseResponse::class, "/queued");
+        $request = $request ?? new LineDiagnoseRequest();
+
+        return $this->apiCallQueued($request);
     }
 
     /**
      * @param TerminateOrderRequest|null $request
      *
-     * @return TerminateOrderResponse|null
+     * @return NinaResponse|null
      * @throws RoutITAPIException
      */
-    public function terminateOrder(?TerminateOrderRequest $request = null): ?TerminateOrderResponse
+    public function terminateOrder(?TerminateOrderRequest $request = null): ?NinaResponse
     {
-        /** @var TerminateOrderResponse|null */
-        return $this->apiCallWithEndpoint($request ?? new TerminateOrderRequest(), TerminateOrderResponse::class, "/queued");
+        $request = $request ?? new TerminateOrderRequest();
+
+        return $this->apiCallQueued($request);
     }
 
     /**
