@@ -4,6 +4,7 @@ namespace Inserve\RoutITAPI\Request;
 
 use Inserve\RoutITAPI\Header;
 use Inserve\RoutITAPI\Request\ModifyFiberOrderRequest\ModifyFiberRequestData;
+use Inserve\RoutITAPI\Validation\Validator;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 final class ModifyFiberOrderRequest extends AbstractRoutITRequest implements RoutITRequestInterface
@@ -18,6 +19,25 @@ final class ModifyFiberOrderRequest extends AbstractRoutITRequest implements Rou
 
     #[SerializedName('ModifyFiberRequestData')]
     private ?ModifyFiberRequestData $modifyFiberRequestData = null;
+
+    public function validate(): void
+    {
+        $errors = [];
+
+        // Required: orderId must be a positive int
+        if (!isset($this->orderId) || !is_int($this->orderId) || $this->orderId < 1) {
+            $errors[] = "OrderId is required and must be a positive integer.";
+        }
+
+        // Validate nested ModifyFiberRequestData
+        if (isset($this->modifyFiberRequestData)) {
+            $errors = array_merge($errors, $this->modifyFiberRequestData->validate());
+        } else {
+            $errors[] = "modifyFiberRequestData must be present.";
+        }
+
+        Validator::throwIfErrors($errors);
+    }
 
     /**
      * getHeader

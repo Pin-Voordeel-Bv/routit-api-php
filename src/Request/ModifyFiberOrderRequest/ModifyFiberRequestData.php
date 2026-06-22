@@ -2,6 +2,7 @@
 
 namespace Inserve\RoutITAPI\Request\ModifyFiberOrderRequest;
 
+use Inserve\RoutITAPI\Validation\Validator;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 final class ModifyFiberRequestData
@@ -14,6 +15,23 @@ final class ModifyFiberRequestData
 
     #[SerializedName('ContactPersonEmailAddress')]
     private ?string $contactPersonEmailAddress = null;
+
+    public function validate(): array
+    {
+        $errors = [];
+
+        Validator::assertRequiredFieldsPresent($this, [
+            'contactPersonName',
+            'contactPersonPhoneNumber',
+            'contactPersonEmailAddress',
+        ], $errors);
+
+        Validator::assertStringLength($this->contactPersonName, 1, 100, 'ContactPersonName', $errors);
+        Validator::assertStringLength($this->contactPersonPhoneNumber, 1, 30, 'ContactPersonPhoneNumber', $errors);
+        Validator::assertStringLength($this->contactPersonEmailAddress, 1, 256, 'ContactPersonEmailAddress', $errors);
+
+        return $errors;
+    }
 
     // ───────────────── ContactPersonName ─────────────────
 
