@@ -160,6 +160,7 @@ final class RoutITAPIClient
     public function modifyCustomer(?ModifyCustomerRequest $request = null): ?NinaResponse
     {
         $request = $request ?? new ModifyCustomerRequest();
+        $request->validate();
 
         return $this->apiCallQueued($request);
     }
@@ -173,6 +174,7 @@ final class RoutITAPIClient
     public function deactivateCustomer(?DeactivateCustomerRequest $request = null): ?NinaResponse
     {
         $request = $request ?? new DeactivateCustomerRequest();
+        $request->validate();
 
         return $this->apiCallQueued($request);
     }
@@ -255,6 +257,7 @@ final class RoutITAPIClient
     public function migrateDslOrder(?MigrateDslOrderRequest $request = null): ?NinaResponse
     {
         $request = $request ?? new MigrateDslOrderRequest();
+        $request->validate();
 
         return $this->apiCallQueued($request);
     }

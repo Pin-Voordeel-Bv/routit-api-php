@@ -4,6 +4,7 @@ namespace Inserve\RoutITAPI\Request;
 
 use Inserve\RoutITAPI\Header;
 use Inserve\RoutITAPI\Request\MigrateDslOrderRequest\MigrateSubnet;
+use Inserve\RoutITAPI\Validation\Validator;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 final class MigrateDslOrderRequest extends AbstractRoutITRequest implements RoutITRequestInterface
@@ -21,6 +22,24 @@ final class MigrateDslOrderRequest extends AbstractRoutITRequest implements Rout
 
     #[SerializedName('IsRealtime')]
     private ?bool $isRealtime = null;
+
+    public function validate(): void
+    {
+        $errors = [];
+
+        Validator::assertRequiredFieldsPresent($this, [], $errors); // No required top-level fields
+
+        // Validate nested DSL order if provided
+        Validator::validateOptionalNested($this->dslOrderRequest ?? null, 'dslOrderRequest', $errors);
+
+        // Validate migrateSubnet if provided
+        Validator::validateOptionalNested($this->migrateSubnet ?? null, 'migrateSubnet', $errors);
+
+        // Optional: isRealtime (boolean)
+        Validator::assertOptionalBoolean($this->isRealtime ?? null, 'isRealtime', $errors);
+
+        Validator::throwIfErrors($errors);
+    }
 
     public function getHeader(): ?Header
     {

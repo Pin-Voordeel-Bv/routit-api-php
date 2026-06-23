@@ -143,7 +143,7 @@ final class NewDslOrderRequest extends AbstractRoutITRequest implements RoutITRe
     #[SerializedName('IsCuFOrder')]
     private ?bool $isCuFOrder = null;
 
-    public function validate(): void
+    public function validate(bool $asRoot = true): array
     {
         $errors = [];
 
@@ -171,7 +171,11 @@ final class NewDslOrderRequest extends AbstractRoutITRequest implements RoutITRe
         Validator::assertIterable($this->channels, 'channels', $errors);
         Validator::validateEach($this->channels, 'channels', $errors);
 
-        Validator::throwIfErrors($errors);
+        if ($asRoot) {
+            Validator::throwIfErrors($errors);
+        }
+
+        return $errors;
     }
 
     // ───────── Header ─────────

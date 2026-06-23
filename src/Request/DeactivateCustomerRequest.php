@@ -3,6 +3,7 @@
 namespace Inserve\RoutITAPI\Request;
 
 use Inserve\RoutITAPI\Header;
+use Inserve\RoutITAPI\Validation\Validator;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 final class DeactivateCustomerRequest extends AbstractRoutITRequest implements RoutITRequestInterface
@@ -17,6 +18,19 @@ final class DeactivateCustomerRequest extends AbstractRoutITRequest implements R
 
     #[SerializedName('SetActive')]
     private ?bool $setActive = null;
+
+    public function validate(): void
+    {
+        $errors = [];
+
+        Validator::assertRequiredFieldsPresent($this, ['customerId', 'setActive'], $errors);
+
+        Validator::assertInitializedInt($this, 'customerId', $errors);
+
+        Validator::assertInitializedBool($this, 'setActive', $errors);
+
+        Validator::throwIfErrors($errors);
+    }
 
     // ───────────────── Header ─────────────────
 

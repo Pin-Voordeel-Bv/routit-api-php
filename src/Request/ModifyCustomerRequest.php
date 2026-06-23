@@ -3,6 +3,7 @@
 namespace Inserve\RoutITAPI\Request;
 
 use Inserve\RoutITAPI\Header;
+use Inserve\RoutITAPI\Validation\Validator;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 final class ModifyCustomerRequest extends AbstractRoutITRequest implements RoutITRequestInterface
@@ -71,6 +72,46 @@ final class ModifyCustomerRequest extends AbstractRoutITRequest implements RoutI
 
     #[SerializedName('ChamberOfCommerceNr')]
     private ?string $chamberOfCommerceNr = null;
+
+    public function validate(): void
+    {
+        $errors = [];
+
+        Validator::assertRequiredFieldsPresent($this, [
+            'header', 'customerId', 'name', 'street', 'zipCode',
+            'city', 'countryCode', 'phone1', 'legalStatus'
+        ], $errors);
+        Validator::assertRequiredPossibleEmptyFieldsPresent($this, [
+            'houseNrExtension'
+        ], $errors);
+
+        // Pattern match for customerId
+        if (!preg_match('/^CID[0-9]+$/', $this->customerId ?? '')) {
+            $errors[] = "Field 'CustomerId' must match pattern CID[0-9]+. Given: " . var_export($this->customerId, true);
+        }
+
+        Validator::assertStringLength($this->name, 1, 75, 'Name', $errors);
+        Validator::assertStringLength($this->street, 1, 100, 'Street', $errors);
+        Validator::assertStringLength($this->zipCode, 1, 10, 'ZipCode', $errors);
+        Validator::assertStringLength($this->city, 1, 50, 'City', $errors);
+        Validator::assertStringLength($this->countryCode, 1, null, 'CountryCode', $errors);
+        Validator::assertStringLength($this->phone1, 1, 20, 'Phone1', $errors);
+        Validator::assertStringLength($this->legalStatus, 2, null, 'LegalStatus', $errors);
+
+        Validator::assertOptionalStringLength($this->phone2, null, 20, 'Phone2', $errors);
+        Validator::assertOptionalStringLength($this->fax, null, 20, 'Fax', $errors);
+        Validator::assertOptionalStringLength($this->email, 1, 256, 'Email', $errors);
+        Validator::assertOptionalStringLength($this->website, null, 256, 'Website', $errors);
+        Validator::assertOptionalStringLength($this->debitNr, null, 20, 'DebitNr', $errors);
+        Validator::assertOptionalStringLength($this->iBAN, null, 50, 'IBAN', $errors);
+        Validator::assertOptionalStringLength($this->bIC, null, 20, 'BIC', $errors);
+        Validator::assertOptionalStringLength($this->vATNr, null, 50, 'VATNr', $errors);
+        Validator::assertOptionalStringLength($this->externalId, null, 20, 'ExternalId', $errors);
+        Validator::assertOptionalStringLength($this->chamberOfCommerceNr, null, 15, 'ChamberOfCommerceNr', $errors);
+        Validator::assertOptionalStringLength($this->houseNrExtension, null, 20, 'HouseNrExtension', $errors);
+
+        Validator::throwIfErrors($errors);
+    }
 
     // ───────────────── Header ─────────────────
 

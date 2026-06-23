@@ -90,6 +90,24 @@ class Validator
         }
     }
 
+    public static function assertRequiredPossibleEmptyFieldsPresent(object $obj, array $requiredFields, array &$errors): void
+    {
+        $ref = new \ReflectionClass($obj);
+        foreach ($requiredFields as $field) {
+            if (!$ref->hasProperty($field)) {
+                $errors[] = "Missing required property '$field' on " . get_class($obj) . ".";
+                continue;
+            }
+            $prop = $ref->getProperty($field);
+            $prop->setAccessible(true);
+            $isInitialized = PHP_VERSION_ID >= 70400 ? $prop->isInitialized($obj) : true;
+            if (!$isInitialized) {
+                $errors[] = "Required property '$field' is not initialized.";
+                continue;
+            }
+        }
+    }
+
     public static function assertStringLength(?string $value, ?int $min, ?int $max, string $fieldName, array &$errors): void
     {
         if ($value === null) {
@@ -194,6 +212,36 @@ class Validator
             }
         } catch (\Error $e) {
             $errors[] = "Failed to access property '$property': " . $e->getMessage();
+        }
+    }
+
+    public static function assertInitializedBool(object $obj, string $fieldName, array &$errors): void
+    {
+        $ref = new \ReflectionClass($obj);
+        if (!$ref->hasProperty($fieldName)) {
+            $errors[] = "Missing property '$fieldName' on " . get_class($obj) . ".";
+            return;
+        }
+
+        $prop = $ref->getProperty($fieldName);
+        $prop->setAccessible(true);
+        $isInitialized = PHP_VERSION_ID >= 70400 ? $prop->isInitialized($obj) : true;
+
+        if (!$isInitialized) {
+            $errors[] = "Property '$fieldName' is not initialized.";
+            return;
+        }
+
+        $value = $prop->getValue($obj);
+        if (!is_bool($value)) {
+            $errors[] = "Property '$fieldName' must be a boolean.";
+        }
+    }
+
+    public static function assertOptionalBoolean(mixed $value, string $fieldName, array &$errors): void
+    {
+        if ($value !== null && !is_bool($value)) {
+            $errors[] = "Field '$fieldName' must be a boolean (true or false).";
         }
     }
 
