@@ -20,6 +20,16 @@ class NinaResponse
     #[\Symfony\Component\Serializer\Annotation\SerializedPath('[ErrorDetails][string]')]
     public ?array $errorDetails = null;
 
+    public function getIsSuccess(): ?bool
+    {
+        return $this->isSuccess;
+    }
+
+    public function getErrorCode(): ?int
+    {
+        return $this->errorCode;
+    }
+
     /**
      * @return string[]|null
      */

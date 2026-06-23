@@ -38,6 +38,7 @@ use Inserve\RoutITAPI\Response\MigrateDslOrderResponse;
 use Inserve\RoutITAPI\Response\ModifyCustomerResponse;
 use Inserve\RoutITAPI\Response\NewCustomerResponse;
 use Inserve\RoutITAPI\Response\NewDslOrderResponse;
+use Inserve\RoutITAPI\Response\NinaResponse;
 use Inserve\RoutITAPI\Response\OrderSummaryResponse;
 use Inserve\RoutITAPI\Response\ProductPriceDetailsResponse;
 use Inserve\RoutITAPI\Response\RePlanDslOrderResponse;
@@ -368,9 +369,44 @@ final class RoutITAPIClient
         string $responseClass,
         string $endpoint = '/realtime'
     ): mixed {
-        $response = $this->apiClient->request($request, $endpoint);
+        $rawBody = $this->apiClient->request($request, $endpoint);
 
-        return $this->apiClient->deserialize($response, $responseClass);
+        // If response is already the correct type, just return it
+        if ($rawBody instanceof $responseClass) {
+            return $rawBody;
+        }
+
+        // Only if it's a string do we proceed with deserialization logic
+        if ($responseClass === NinaResponse::class && is_string($rawBody)) {
+            if (str_contains($rawBody, APIClient::XML_ERROR_RESPONSE_TAG)) {
+                $nina = $this->apiClient->deserialize($rawBody, NinaResponse::class);
+
+                if (!$nina->isSuccess || $nina->errorCode !== 0) {
+                    throw new RoutITAPIException(
+                        (string) ($nina->errorMessage ?? 'Unknown NinaResponse error'),
+                        $nina->errorCode ?? 0,
+                        null,
+                        $nina->getErrorDetails()
+                    );
+                }
+
+                return $nina;
+            }
+        }
+
+        // Final fallback: try to deserialize into expected response class
+        if (is_string($rawBody)) {
+            return $this->apiClient->deserialize($rawBody, $responseClass);
+        }
+
+        // This is a serious unexpected case
+        // throw new \UnexpectedValueException("Unexpected response type: " . gettype($rawBody));
+        throw new \UnexpectedValueException(sprintf(
+            "Unexpected response type: %s, expected: %s, actual class: %s",
+            gettype($rawBody),
+            $responseClass,
+            get_class($rawBody)
+        ));
     }
 
     /**

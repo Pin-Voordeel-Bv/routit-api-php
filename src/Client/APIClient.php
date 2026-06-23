@@ -36,7 +36,7 @@ final class APIClient
 {
     use LoggerAwareTrait;
 
-    protected const XML_ERROR_RESPONSE_TAG = 'NinaResponse';
+    public const XML_ERROR_RESPONSE_TAG = 'NinaResponse';
 
     protected Serializer $serializer;
     protected ObjectNormalizer $normalizer;
@@ -103,7 +103,7 @@ final class APIClient
      *
      * @throws RoutITAPIException
      */
-    public function request(RoutITRequestInterface $request, string $endpoint = '/realtime'): string
+    public function request(RoutITRequestInterface $request, string $endpoint = '/realtime'): string|NinaResponse
     {
         $apiRequest = new Request(
             method: 'POST',
@@ -142,7 +142,7 @@ final class APIClient
 
                 // Return early if it's a clean success
                 if ($nina instanceof NinaResponse && $nina->isSuccess && $nina->errorCode === 0) {
-                    return $body;
+                    return $nina;
                 }
 
                 throw new RoutITAPIException(
