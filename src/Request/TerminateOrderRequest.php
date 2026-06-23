@@ -40,8 +40,8 @@ final class TerminateOrderRequest extends AbstractRoutITRequest implements RoutI
         // DesiredTerminateDate: basic presence is checked above
         // Note: deeper validation (e.g., "must be before some future date") is done on server/backend
         // If you want to validate that it's a valid date:
-        if (isset($this->desiredTerminateDate) && !($this->desiredTerminateDate instanceof \DateTimeInterface)) {
-            $errors[] = "DesiredTerminateDate must be a valid date.";
+        if (!is_string($this->desiredTerminateDate) || !strtotime($this->desiredTerminateDate)) {
+            $errors[] = "DesiredTerminateDate must be a valid date string (e.g., 'YYYY-MM-DD'). Given: " . var_export($this->desiredTerminateDate, true);
         }
 
         Validator::throwIfErrors($errors);
