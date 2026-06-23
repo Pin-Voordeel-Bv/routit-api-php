@@ -293,6 +293,7 @@ final class RoutITAPIClient
     public function upgradeOrder(?UpgradeOrderRequest $request = null): ?NinaResponse
     {
         $request = $request ?? new UpgradeOrderRequest();
+        $request->validate();
 
         return $this->apiCallQueued($request);
     }

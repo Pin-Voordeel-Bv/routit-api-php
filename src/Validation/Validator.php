@@ -81,6 +81,94 @@ class Validator
         }
     }
 
+    public static function assertInitializedStringLength(
+        object $obj,
+        string $property,
+        ?int $min,
+        ?int $max,
+        array &$errors
+    ): void {
+        $ref = new \ReflectionClass($obj);
+
+        if (!$ref->hasProperty($property)) {
+            $errors[] = "Missing property '$property' on " . get_class($obj);
+            return;
+        }
+
+        $prop = $ref->getProperty($property);
+        $prop->setAccessible(true);
+
+        if (PHP_VERSION_ID >= 70400 && !$prop->isInitialized($obj)) {
+            $errors[] = "Property '$property' is not initialized.";
+            return;
+        }
+
+        try {
+            $val = $prop->getValue($obj);
+            self::assertStringLength($val, $min, $max, $property, $errors);
+        } catch (\Error $e) {
+            $errors[] = "Failed to access property '$property': " . $e->getMessage();
+        }
+    }
+
+    public static function assertInitializedInt(
+        object $obj,
+        string $property,
+        array &$errors
+    ): void {
+        $ref = new \ReflectionClass($obj);
+
+        if (!$ref->hasProperty($property)) {
+            $errors[] = "Missing property '$property' on " . get_class($obj);
+            return;
+        }
+
+        $prop = $ref->getProperty($property);
+        $prop->setAccessible(true);
+
+        if (PHP_VERSION_ID >= 70400 && !$prop->isInitialized($obj)) {
+            $errors[] = "Property '$property' is not initialized.";
+            return;
+        }
+
+        try {
+            $value = $prop->getValue($obj);
+            if (!is_int($value)) {
+                $errors[] = "Property '$property' must be an integer.";
+            }
+        } catch (\Error $e) {
+            $errors[] = "Failed to access property '$property': " . $e->getMessage();
+        }
+    }
+
+    public static function assertOptionalDateString(
+        mixed $value,
+        string $fieldName,
+        array &$errors
+    ): void {
+        if ($value === null) {
+            return;
+        }
+
+        if (!is_string($value)) {
+            $errors[] = "Field '$fieldName' must be a string date (e.g., 'YYYY-MM-DD'), got " . gettype($value) . ".";
+            return;
+        }
+
+        // Check if the format is roughly valid and parsable
+        $ts = strtotime($value);
+        if ($ts === false) {
+            $errors[] = "Field '$fieldName' must be a valid date string (e.g., 'YYYY-MM-DD'). Given: " . var_export($value, true);
+            return;
+        }
+
+        // Optionally check format stricter
+        $parts = explode('-', $value);
+        if (count($parts) !== 3 || strlen($parts[0]) !== 4 || strlen($parts[1]) !== 2 || strlen($parts[2]) !== 2) {
+            $errors[] = "Field '$fieldName' is not in expected 'YYYY-MM-DD' format.";
+        }
+    }
+
     public static function throwIfErrors(array $errors): void
     {
         if (!empty($errors)) {
@@ -107,5 +195,10 @@ class Validator
         }
 
         return true;
+    }
+
+    public static function isDateString(string $value): bool
+    {
+        return (bool) \DateTime::createFromFormat('Y-m-d', $value);
     }
 }

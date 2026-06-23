@@ -4,6 +4,7 @@ namespace Inserve\RoutITAPI\Request;
 
 use DateTimeInterface;
 use Inserve\RoutITAPI\Header;
+use Inserve\RoutITAPI\Validation\Validator;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 final class UpgradeOrderRequest extends AbstractRoutITRequest implements RoutITRequestInterface
@@ -24,6 +25,21 @@ final class UpgradeOrderRequest extends AbstractRoutITRequest implements RoutITR
      */
     #[SerializedName('UpgradeWishDate')]
     private ?string $upgradeWishDate = null;
+
+    public function validate(): void
+    {
+        $errors = [];
+
+        Validator::assertRequiredFieldsPresent($this, ['orderId', 'productId'], $errors);
+
+        Validator::assertInitializedInt($this, 'orderId', $errors);
+
+        Validator::assertInitializedStringLength($this, 'productId', 1, 13, $errors);
+
+        Validator::assertOptionalDateString($this->upgradeWishDate, 'upgradeWishDate', $errors);
+
+        Validator::throwIfErrors($errors);
+    }
 
     public function getHeader(): ?Header
     {

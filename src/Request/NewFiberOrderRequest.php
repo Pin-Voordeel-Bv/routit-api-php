@@ -43,20 +43,22 @@ final class NewFiberOrderRequest extends AbstractRoutITRequest implements RoutIT
         Validator::assertStringLength((string) $this->productId, 1, 13, 'ProductId', $errors);
 
         if ($this->fiberRequestData) {
-            $this->fiberRequestData->validate($errors);
+            $errors = array_merge($errors, $this->fiberRequestData->validate());
         }
 
         if ($this->firstNewVlan) {
-            $this->firstNewVlan->validate($errors);
+            $errors = array_merge($errors, $this->firstNewVlan->validate());
         }
 
         if ($this->fiberMigrationData) {
-            $this->fiberMigrationData->validate($errors);
+            $errors = array_merge($errors, $this->fiberMigrationData->validate());
         }
 
         if ($this->fiberAccessData) {
-            $this->fiberAccessData->validate($errors);
+            $errors = array_merge($errors, $this->fiberAccessData->validate());
         }
+
+        Validator::throwIfErrors($errors);
     }
 
     /**
