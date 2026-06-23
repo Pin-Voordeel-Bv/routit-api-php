@@ -7,19 +7,59 @@ use Inserve\RoutITAPI\Exception\RoutITAPIException;
 
 class Validator
 {
-    public static function assertStringLength(?string $value, ?int $min, ?int $max, string $fieldName, array &$errors): void
+    public static function validateNested(?object $obj, string $fieldName, array &$errors): void
     {
-        if ($value === null) {
-            $errors[] = "Field '$fieldName' is null.";
+        if ($obj === null) {
+            $errors[] = "Required nested object '$fieldName' is missing or null.";
             return;
         }
-        $min = $min ?? 0;
-        $len = strlen($value);
-        if ($len < $min) {
-            $errors[] = "Field '$fieldName' is shorter than minimum length $min.";
+
+        if (!method_exists($obj, 'validate')) {
+            $errors[] = "Object '$fieldName' does not support validation.";
+            return;
         }
-        if ($max !== null && $len > $max) {
-            $errors[] = "Field '$fieldName' is longer than maximum length $max.";
+
+        $result = $obj->validate();
+        if (is_array($result)) {
+            $errors = array_merge($errors, $result);
+        }
+    }
+
+    public static function validateOptionalNested(?object $obj, string $name, array &$errors): void
+    {
+        if ($obj === null) {
+            return; // no validation needed if the optional object is missing
+        }
+
+        if (!method_exists($obj, 'validate')) {
+            $errors[] = "Optional nested object '$name' does not have a validate() method.";
+            return;
+        }
+
+        $nestedErrors = $obj->validate();
+        if (!empty($nestedErrors)) {
+            foreach ($nestedErrors as $e) {
+                $errors[] = "$name: $e";
+            }
+        }
+    }
+
+    public static function validateEach(iterable $items, string $fieldName, array &$errors): void
+    {
+        foreach ($items as $i => $item) {
+            if (!is_object($item) || !method_exists($item, 'validate')) {
+                $errors[] = "Item at index $i in '$fieldName' is not a valid object with a validate() method.";
+                continue;
+            }
+
+            $nestedErrors = $item->validate();
+            if (!is_array($nestedErrors)) {
+                $errors[] = "Validation for item at index $i in '$fieldName' did not return an error array.";
+            } else {
+                foreach ($nestedErrors as $e) {
+                    $errors[] = "$fieldName[$i]: $e";
+                }
+            }
         }
     }
 
@@ -47,6 +87,22 @@ class Validator
             } catch (\Error $e) {
                 $errors[] = "Failed to access property '$field': " . $e->getMessage();
             }
+        }
+    }
+
+    public static function assertStringLength(?string $value, ?int $min, ?int $max, string $fieldName, array &$errors): void
+    {
+        if ($value === null) {
+            $errors[] = "Field '$fieldName' is null.";
+            return;
+        }
+        $min = $min ?? 0;
+        $len = strlen($value);
+        if ($len < $min) {
+            $errors[] = "Field '$fieldName' is shorter than minimum length $min.";
+        }
+        if ($max !== null && $len > $max) {
+            $errors[] = "Field '$fieldName' is longer than maximum length $max.";
         }
     }
 
@@ -166,6 +222,13 @@ class Validator
         $parts = explode('-', $value);
         if (count($parts) !== 3 || strlen($parts[0]) !== 4 || strlen($parts[1]) !== 2 || strlen($parts[2]) !== 2) {
             $errors[] = "Field '$fieldName' is not in expected 'YYYY-MM-DD' format.";
+        }
+    }
+
+    public static function assertIterable(mixed $value, string $fieldName, array &$errors): void
+    {
+        if (!is_iterable($value)) {
+            $errors[] = "Field '$fieldName' must be iterable.";
         }
     }
 

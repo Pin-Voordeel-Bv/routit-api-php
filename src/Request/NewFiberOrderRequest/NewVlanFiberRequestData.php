@@ -35,13 +35,8 @@ final class NewVlanFiberRequestData
     {
         $errors = [];
 
-        if (!is_array($this->subnets)) {
-            $errors[] = "Subnets must be an array.";
-        } else {
-            foreach ($this->subnets as $subnet) {
-                $errors = array_merge($errors, $subnet->validate());
-            }
-        }
+        Validator::assertIterable($this->subnets, 'subnets', $errors);
+        Validator::validateEach($this->subnets, 'subnets', $errors);
 
         return $errors;
     }

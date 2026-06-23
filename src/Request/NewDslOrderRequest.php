@@ -168,13 +168,8 @@ final class NewDslOrderRequest extends AbstractRoutITRequest implements RoutITRe
         Validator::assertOptionalStringLength($this->ontSerialNumber, null, 16, 'OntSerialNumber', $errors);
         Validator::assertOptionalStringLength($this->serviceGroup, null, 20, 'ServiceGroup', $errors);
 
-        if (!is_array($this->channels) && !$this->channels instanceof \Traversable) {
-            $errors[] = "Property 'channels' must be iterable.";
-        } else {
-            foreach ($this->channels as $channel) {
-                $errors = array_merge($errors, $channel->validate());
-            }
-        }
+        Validator::assertIterable($this->channels, 'channels', $errors);
+        Validator::validateEach($this->channels, 'channels', $errors);
 
         Validator::throwIfErrors($errors);
     }

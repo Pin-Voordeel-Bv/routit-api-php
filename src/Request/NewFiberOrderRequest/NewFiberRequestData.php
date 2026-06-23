@@ -44,18 +44,12 @@ final class NewFiberRequestData
             'address', 'company', 'contactPersonName', 'contactPersonPhoneNumber', 'contactPersonEmailAddress'
         ], $errors);
 
-        if (isset($this->address)) {
-            $errors = array_merge($errors, $this->address->validate());
-        } else {
-            $errors[] = "Required property 'address' is not initialized.";
-        }
+        Validator::validateNested($this->address ?? null, 'address', $errors);
 
         Validator::assertOptionalStringLength($this->contactPerson2PhoneNumber, null, 10, 'ContactPerson2PhoneNumber', $errors);
         Validator::assertOptionalStringLength($this->contactPerson2EmailAddress, null, 256, 'ContactPerson2EmailAddress', $errors);
 
-        if ($this->fiberSurveyData) {
-            $errors = array_merge($errors, $this->fiberSurveyData->validate());
-        }
+        Validator::validateOptionalNested($this->fiberSurveyData ?? null, 'fiberSurveyData', $errors);
 
         return $errors;
     }

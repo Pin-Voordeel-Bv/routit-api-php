@@ -24,10 +24,7 @@ final class ModifyFiberOrderRequest extends AbstractRoutITRequest implements Rou
     {
         $errors = [];
 
-        // Required: orderId must be a positive int
-        if (!isset($this->orderId) || !is_int($this->orderId) || $this->orderId < 1) {
-            $errors[] = "OrderId is required and must be a positive integer.";
-        }
+        Validator::assertInitializedInt($this, 'orderId', $errors);
 
         // Validate nested ModifyFiberRequestData
         if (isset($this->modifyFiberRequestData)) {
