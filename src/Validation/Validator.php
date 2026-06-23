@@ -238,6 +238,37 @@ class Validator
         }
     }
 
+    public static function assertInitializedDateString(
+        object $obj,
+        string $property,
+        string $fieldName,
+        array &$errors
+    ): void {
+        if (!property_exists($obj, $property)) {
+            $errors[] = "Missing property '$fieldName' on " . get_class($obj) . ".";
+            return;
+        }
+
+        $ref = new \ReflectionProperty($obj, $property);
+        $ref->setAccessible(true);
+
+        if (PHP_VERSION_ID >= 70400 && !$ref->isInitialized($obj)) {
+            $errors[] = "Property '$fieldName' is not initialized.";
+            return;
+        }
+
+        $value = $ref->getValue($obj);
+
+        if (!is_string($value)) {
+            $errors[] = "Field '$fieldName' must be a string.";
+            return;
+        }
+
+        if (!strtotime($value)) {
+            $errors[] = "Field '$fieldName' must be a valid date string (e.g., 'YYYY-MM-DD').";
+        }
+    }
+
     public static function assertOptionalBoolean(mixed $value, string $fieldName, array &$errors): void
     {
         if ($value !== null && !is_bool($value)) {

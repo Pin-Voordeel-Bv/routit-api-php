@@ -271,6 +271,7 @@ final class RoutITAPIClient
     public function rePlanDslOrder(?RePlanDslOrderRequest $request = null): ?NinaResponse
     {
         $request = $request ?? new RePlanDslOrderRequest();
+        $request->validate();
 
         return $this->apiCallQueued($request);
     }
