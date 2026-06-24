@@ -36,7 +36,7 @@ final class MigrateDslOrderRequest extends AbstractRoutITRequest implements Rout
         Validator::validateOptionalNested($this->migrateSubnet ?? null, 'migrateSubnet', $errors);
 
         // Optional: isRealtime (boolean)
-        Validator::assertOptionalBoolean($this->isRealtime ?? null, 'isRealtime', $errors);
+        Validator::assertOptionalBoolean($this, 'isRealtime', $errors);
 
         Validator::throwIfErrors($errors);
     }
