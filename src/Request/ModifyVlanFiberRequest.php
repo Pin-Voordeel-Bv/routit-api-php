@@ -4,6 +4,7 @@ namespace Inserve\RoutITAPI\Request;
 
 use Inserve\RoutITAPI\Header;
 use Inserve\RoutITAPI\Request\ModifyVlanFiberRequest\ModifyVlanFiberRequestData;
+use Inserve\RoutITAPI\Validation\Validator;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 final class ModifyVlanFiberRequest extends AbstractRoutITRequest implements RoutITRequestInterface
@@ -18,6 +19,16 @@ final class ModifyVlanFiberRequest extends AbstractRoutITRequest implements Rout
 
     #[SerializedName('ModifyVlanFiberRequestData')]
     private ?ModifyVlanFiberRequestData $modifyVlanFiberRequestData = null;
+
+    public function validate(): void
+    {
+        $errors = [];
+
+        Validator::assertInitializedInt($this, 'orderId', $errors);
+        Validator::validateOptionalNested($this->modifyVlanFiberRequestData ?? null, 'modifyVlanFiberRequestData', $errors);
+
+        Validator::throwIfErrors($errors);
+    }
 
     public function getHeader(): ?Header
     {

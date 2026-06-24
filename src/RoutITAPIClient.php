@@ -210,6 +210,7 @@ final class RoutITAPIClient
     public function newVlanFiberOrder(?NewVlanFiberOrderRequest $request = null): ?NinaResponse
     {
         $request = $request ?? new NewVlanFiberOrderRequest();
+        $request->validate();
 
         return $this->apiCallQueued($request);
     }
@@ -217,6 +218,7 @@ final class RoutITAPIClient
     public function modifyVlanFiber(?ModifyVlanFiberRequest $request = null): ?NinaResponse
     {
         $request = $request ?? new ModifyVlanFiberRequest();
+        $request->validate();
 
         return $this->apiCallQueued($request);
     }
@@ -244,6 +246,7 @@ final class RoutITAPIClient
     public function modifyDslOrder(?ModifyDslOrderRequest $request = null): ?NinaResponse
     {
         $request = $request ?? new ModifyDslOrderRequest();
+        $request->validate();
 
         return $this->apiCallQueued($request);
     }
@@ -285,6 +288,7 @@ final class RoutITAPIClient
     public function upgradeDslOrder(?UpgradeDslOrderRequest $request = null): ?NinaResponse
     {
         $request = $request ?? new UpgradeDslOrderRequest();
+        $request->validate();
 
         return $this->apiCallQueued($request);
     }

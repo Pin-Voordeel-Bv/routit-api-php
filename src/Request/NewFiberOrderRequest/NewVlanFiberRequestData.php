@@ -2,7 +2,7 @@
 
 namespace Inserve\RoutITAPI\Request\NewFiberOrderRequest;
 
-use Inserve\RoutITAPI\Request\NewFiberOrderRequest\SubnetRequestData;
+use Inserve\RoutITAPI\Request\SubnetRequestData;
 use Inserve\RoutITAPI\Validation\Validator;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Serializer\Attribute\SerializedPath;

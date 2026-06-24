@@ -2,6 +2,7 @@
 
 namespace Inserve\RoutITAPI\Request\NewVlanFiberOrderRequest;
 
+use Inserve\RoutITAPI\Validation\Validator;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 final class PortInformation
@@ -17,6 +18,14 @@ final class PortInformation
 
     #[SerializedName('AutoNegotiate')]
     private ?bool $autoNegotiate = null;
+
+    public function validate(array &$errors): void
+    {
+        Validator::assertInitializedInt($this, 'portSpeed', 'PortSpeed', $errors);
+        Validator::assertEnumValue($this->connectionSpeedUnit, ['Mbps', 'Gbps', 'Kbps'], 'ConnectionSpeedUnit', $errors);
+        Validator::assertEnumValue($this->interfaceType, ['Electric', 'OpticalMM', 'OpticalSM'], 'InterfaceType', $errors);
+        Validator::assertOptionalBoolean($this, 'autoNegotiate', 'AutoNegotiate', $errors);
+    }
 
     public function getPortSpeed(): int
     {

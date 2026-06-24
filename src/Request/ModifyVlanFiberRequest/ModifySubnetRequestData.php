@@ -4,6 +4,7 @@ namespace Inserve\RoutITAPI\Request\ModifyVlanFiberRequest;
 
 use Inserve\RoutITAPI\Enum\SubnetPriority;
 use Inserve\RoutITAPI\Enum\SubnetType;
+use Inserve\RoutITAPI\Validation\Validator;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 final class ModifySubnetRequestData
@@ -26,6 +27,20 @@ final class ModifySubnetRequestData
 
     #[SerializedName('SubnetPriority')]
     private ?string $subnetPriority = null; // enum serialized as string
+
+    public function validate(): array
+    {
+        $errors = [];
+
+        Validator::assertInitializedInt($this, 'subnetId', $errors);
+        // Validator::validateNested($this->subnet ?? null, 'subnet', $errors);
+        Validator::assertInitializedInt($this, 'cidr', $errors);
+        Validator::assertOptionalStringLength($this->ipAddress ?? null, null, 255, 'IPAddress', $errors);
+        Validator::assertRequiredEnum($this->subnetType ?? null, ['Primary', 'Secondary', 'StaticRoute'], 'SubnetType', $errors);
+        Validator::assertOptionalEnumValue($this->subnetPriority ?? null, ['P90', 'P100', 'P110'], 'SubnetPriority', $errors);
+
+        return $errors;
+    }
 
     /* =========================
        Setters

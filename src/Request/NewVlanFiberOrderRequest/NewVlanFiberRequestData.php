@@ -2,6 +2,7 @@
 
 namespace Inserve\RoutITAPI\Request\NewVlanFiberOrderRequest;
 
+use Inserve\RoutITAPI\Validation\Validator;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 final class NewVlanFiberRequestData
@@ -21,6 +22,24 @@ final class NewVlanFiberRequestData
 
     #[SerializedName('IsSubnetOverlapCheckDisabled')]
     private ?bool $isSubnetOverlapCheckDisabled = null;
+
+    public function validate(): array
+    {
+        $errors = [];
+
+        Validator::assertRequiredFieldsPresent($this, ['subnets', 'isClosed'], $errors);
+
+        Validator::assertWrappedArrayPresentAndValid($this->subnets, 'subnets', $errors);
+
+        Validator::assertOptionalInt($this, 'ipVpnOrderId', $errors);
+        Validator::assertOptionalStringLength($this->ipAddressPe, null, 255, 'IPAddressPE', $errors);
+        Validator::validateOptionalNested($this->portInformation ?? null, 'portInformation', $errors);
+        Validator::validateOptionalNested($this->networkInformation ?? null, 'networkInformation', $errors);
+        Validator::assertOptionalBoolean($this, 'isSubnetOverlapCheckDisabled', $errors);
+        Validator::assertInitializedBoolean($this, 'isClosed', $errors);
+
+        return $errors;
+    }
 
     public function __construct()
     {

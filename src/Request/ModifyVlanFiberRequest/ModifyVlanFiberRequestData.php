@@ -2,6 +2,7 @@
 
 namespace Inserve\RoutITAPI\Request\ModifyVlanFiberRequest;
 
+use Inserve\RoutITAPI\Validation\Validator;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 final class ModifyVlanFiberRequestData
@@ -29,6 +30,28 @@ final class ModifyVlanFiberRequestData
 
     #[SerializedName('IsIPMigrationAllowed')]
     private ?bool $isIpMigrationAllowed = null;
+
+    public function validate(): array
+    {
+        $errors = [];
+
+        Validator::assertInitializedInt($this, 'routerAccessListId', $errors);
+        Validator::assertOptionalInt($this, 'ipVpnOrderId', $errors);
+        Validator::assertOptionalStringLength($this->ipAddressPe, null, 255, 'IPAddressPE', $errors);
+
+        Validator::validateOptionalNested($this->portInformation ?? null, 'portInformation', $errors);
+        Validator::assertOptionalBoolean($this, 'isClosed', $errors);
+        Validator::assertOptionalBoolean($this, 'isSubnetOverlapCheckDisabled', $errors);
+        Validator::assertOptionalBoolean($this, 'isIpMigrationAllowed', $errors);
+
+        // Subnets is optional and wrapped
+        if ($this->subnets !== null) {
+            Validator::validateEach($this->subnets->getItems() ?? [], 'subnets', $errors);
+        }
+        // Validator::assertWrappedArrayPresentAndValid($this->subnets ?? null, 'subnets', $errors);
+
+        return $errors;
+    }
 
     public function getRouterAccessListId(): ?int
     {

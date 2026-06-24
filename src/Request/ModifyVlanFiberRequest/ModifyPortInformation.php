@@ -3,6 +3,7 @@
 namespace Inserve\RoutITAPI\Request\ModifyVlanFiberRequest;
 
 use Inserve\RoutITAPI\Enum\Request\ModifyVlanFiberRequest\ConnectionSpeedUnit; // if you already have this enum
+use Inserve\RoutITAPI\Validation\Validator;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 final class ModifyPortInformation
@@ -16,6 +17,17 @@ final class ModifyPortInformation
 
     #[SerializedName('AutoNegotiate')]
     private ?bool $autoNegotiate = null;
+
+    public function validate(): array
+    {
+        $errors = [];
+
+        Validator::assertInitializedInt($this, 'portSpeed', $errors);
+        Validator::assertRequiredEnum($this->connectionSpeedUnit ?? null, ['Mbps', 'Gbps', 'Kbps'], 'ConnectionSpeedUnit', $errors);
+        Validator::assertInitializedBoolean($this, 'autoNegotiate', $errors);
+
+        return $errors;
+    }
 
     public function setPortSpeed(?int $portSpeed): self
     {

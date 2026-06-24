@@ -4,6 +4,7 @@ namespace Inserve\RoutITAPI\Request;
 
 use Inserve\RoutITAPI\Header;
 use Inserve\RoutITAPI\Request\NewVlanFiberOrderRequest\NewVlanFiberRequestData;
+use Inserve\RoutITAPI\Validation\Validator;
 use Symfony\Component\Serializer\Attribute\Ignore;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
@@ -25,6 +26,22 @@ final class NewVlanFiberOrderRequest extends AbstractRoutITRequest implements Ro
 
     #[SerializedName('NewVlanFiberRequestData')]
     private NewVlanFiberRequestData $newVlanFiberRequestData;
+
+    public function validate(): void
+    {
+        $errors = [];
+
+        Validator::assertRequiredFieldsPresent($this, [
+            'header', 'customerId', 'fiberOrderId', 'vlanFiberProductId', 'newVlanFiberRequestData'
+        ], $errors);
+
+        Validator::assertStringLength($this->vlanFiberProductId, 1, 13, 'VlanFiberProductId', $errors);
+        Validator::assertInitializedInt($this, 'customerId', $errors);
+        Validator::assertInitializedInt($this, 'fiberOrderId', $errors);
+        Validator::validateNested($this->newVlanFiberRequestData ?? null, 'newVlanFiberRequestData', $errors);
+
+        Validator::throwIfErrors($errors);
+    }
 
     // ---- getters/setters ----
 

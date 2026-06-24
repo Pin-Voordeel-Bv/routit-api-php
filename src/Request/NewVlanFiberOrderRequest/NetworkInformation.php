@@ -2,6 +2,7 @@
 
 namespace Inserve\RoutITAPI\Request\NewVlanFiberOrderRequest;
 
+use Inserve\RoutITAPI\Validation\Validator;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 final class NetworkInformation
@@ -11,6 +12,12 @@ final class NetworkInformation
 
     #[SerializedName('SegregateVlanOrderId')]
     private ?int $segregateVlanOrderId = null;
+
+    public function validate(array &$errors): void
+    {
+        Validator::assertOptionalEnumValue($this->countryNet ?? null, ['A', 'B'], 'CountryNet', $errors);
+        Validator::assertOptionalInt($this, 'segregateVlanOrderId', 'SegregateVlanOrderId', $errors);
+    }
 
     public function getCountryNet(): ?string
     {

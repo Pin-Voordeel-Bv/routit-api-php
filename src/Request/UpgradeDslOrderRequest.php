@@ -3,6 +3,7 @@
 namespace Inserve\RoutITAPI\Request;
 
 use Inserve\RoutITAPI\Header;
+use Inserve\RoutITAPI\Validation\Validator;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 final class UpgradeDslOrderRequest extends AbstractRoutITRequest implements RoutITRequestInterface
@@ -25,6 +26,28 @@ final class UpgradeDslOrderRequest extends AbstractRoutITRequest implements Rout
     #[SerializedName('Label')]
     private ?string $label = null;
 
+    public function validate(): void
+    {
+        $errors = [];
+
+        Validator::assertRequiredFieldsPresent($this, ['header', 'orderId', 'productCode'], $errors);
+
+        // orderId must be a non-empty string matching pattern: OID followed by digits
+        Validator::assertInitializedStringMatchingPattern(
+            $this,
+            'orderId',
+            '/^OID[0-9]+$/',
+            'OrderId',
+            $errors
+        );
+
+        Validator::assertStringPropertyLength($this, 'productCode', 1, null, 'ProductCode', $errors);
+
+        Validator::assertOptionalStringLength($this->label ?? null, null, 255, 'Label', $errors); // maxLength was not defined; assuming generous
+
+        Validator::throwIfErrors($errors);
+    }
+
     public function getHeader(): Header
     {
         return $this->header;
@@ -43,11 +66,6 @@ final class UpgradeDslOrderRequest extends AbstractRoutITRequest implements Rout
 
     public function setOrderId(string $orderId): self
     {
-        // enforce XSD pattern OID[0-9]+
-        if (!preg_match('/^OID[0-9]+$/', $orderId)) {
-            throw new \InvalidArgumentException("OrderId must match pattern OID[0-9]+, got: {$orderId}");
-        }
-
         $this->orderId = $orderId;
         return $this;
     }
@@ -59,10 +77,6 @@ final class UpgradeDslOrderRequest extends AbstractRoutITRequest implements Rout
 
     public function setProductCode(string $productCode): self
     {
-        if (trim($productCode) === '') {
-            throw new \InvalidArgumentException('ProductCode must have minLength 1.');
-        }
-
         $this->productCode = $productCode;
         return $this;
     }

@@ -2,12 +2,13 @@
 
 namespace Inserve\RoutITAPI\Request\NewVlanFiberOrderRequest;
 
+use Inserve\RoutITAPI\Request\SubnetRequestData;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 final class ArrayOfSubnetRequestData
 {
     /**
-     * @var SubnetRequestDataV1[]|null
+     * @var SubnetRequestData[]|null
      */
     #[SerializedName('SubnetRequestData_V1')]
     private ?array $items = null;

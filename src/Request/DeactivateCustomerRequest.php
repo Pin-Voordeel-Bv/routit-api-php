@@ -27,7 +27,7 @@ final class DeactivateCustomerRequest extends AbstractRoutITRequest implements R
 
         Validator::assertInitializedInt($this, 'customerId', $errors);
 
-        Validator::assertInitializedBool($this, 'setActive', $errors);
+        Validator::assertInitializedBoolean($this, 'setActive', $errors);
 
         Validator::throwIfErrors($errors);
     }

@@ -14,7 +14,7 @@ final class TerminateOrderRequest extends AbstractRoutITRequest implements RoutI
     private ?Header $header = null;
 
     #[SerializedName('OrderId')]
-    private ?string $orderId = null;
+    private string $orderId;
 
     #[SerializedName('DesiredTerminateDate')]
     private ?string $desiredTerminateDate = null;
@@ -28,14 +28,14 @@ final class TerminateOrderRequest extends AbstractRoutITRequest implements RoutI
 
         Validator::assertRequiredFieldsPresent($this, ['header', 'orderId', 'desiredTerminateDate'], $errors);
 
-        // OrderId: must start with 'OID' and contain digits after
-        if (property_exists($this, 'orderId')) {
-            if (!preg_match('/^OID[0-9]+$/', $this->orderId ?? '')) {
-                $errors[] = "OrderId must match pattern 'OID[0-9]+'. Given: '{$this->orderId}'";
-            } else {
-                Validator::assertStringLength($this->orderId, 1, null, 'OrderId', $errors);
-            }
-        }
+        // orderId must be a non-empty string matching pattern: OID followed by digits
+        Validator::assertInitializedStringMatchingPattern(
+            $this,
+            'orderId',
+            '/^OID[0-9]+$/',
+            'OrderId',
+            $errors
+        );
 
         Validator::assertOptionalDateString($this->desiredTerminateDate, 'DesiredTerminateDate', $errors);
 
@@ -66,7 +66,7 @@ final class TerminateOrderRequest extends AbstractRoutITRequest implements RoutI
      * getOrderId
      * @return string|null
      */
-    public function getOrderId(): ?string
+    public function getOrderId(): string
     {
         return $this->orderId;
     }
@@ -76,7 +76,7 @@ final class TerminateOrderRequest extends AbstractRoutITRequest implements RoutI
      * @param mixed $orderId
      * @return $this
      */
-    public function setOrderId(?string $orderId): self
+    public function setOrderId(string $orderId): self
     {
         $this->orderId = $orderId;
         return $this;
