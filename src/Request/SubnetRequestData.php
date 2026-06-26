@@ -21,8 +21,10 @@ final class SubnetRequestData
     #[SerializedName('SubnetPriority')]
     private ?string $subnetPriority = null;
 
-    public function validate(array &$errors): void
+    public function validate(): array
     {
+        $errors = [];
+
         Validator::assertRequiredFieldsPresent($this, ['cidr', 'subnetType'], $errors);
 
         Validator::assertOptionalStringLength($this->ipAddress, null, 255, 'IpAddress', $errors);
@@ -39,6 +41,8 @@ final class SubnetRequestData
         } elseif (!in_array($this->cidr, [24, 25, 26, 27, 28, 29, 30, 32], true)) {
             $errors[] = "CIDR must be one of: 32, 30, 29, 28, 27, 26, 25, 24. Given: {$this->cidr}";
         }
+
+        return $errors;
     }
 
     // ✅ getters (important for your serializer)

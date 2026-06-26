@@ -13,10 +13,14 @@ final class NetworkInformation
     #[SerializedName('SegregateVlanOrderId')]
     private ?int $segregateVlanOrderId = null;
 
-    public function validate(array &$errors): void
+    public function validate(): array
     {
+        $errors = [];
+
         Validator::assertOptionalEnumValue($this, 'countryNet', ['A', 'B'], $errors);
         Validator::assertOptionalInt($this, 'segregateVlanOrderId', 'SegregateVlanOrderId', $errors);
+
+        return $errors;
     }
 
     public function getCountryNet(): ?string

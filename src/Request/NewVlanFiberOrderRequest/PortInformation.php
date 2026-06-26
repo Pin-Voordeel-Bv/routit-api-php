@@ -19,8 +19,14 @@ final class PortInformation
     #[SerializedName('AutoNegotiate')]
     private ?bool $autoNegotiate = null;
 
-    public function validate(array &$errors): void
+    public function validate(): array
     {
+        $errors = [];
+
+        // @TODO: added assertRequiredFieldsPresent
+        Validator::assertRequiredFieldsPresent($this, ['portSpeed'], $errors);
+
+        // @TODO: is this not already checked by setter
         Validator::assertInitializedInt($this, 'portSpeed', 'PortSpeed', $errors);
         Validator::assertEnumValue(
             $this->connectionSpeedUnit ?? null,
@@ -35,6 +41,8 @@ final class PortInformation
             $errors
         );
         Validator::assertOptionalBoolean($this, 'autoNegotiate', 'AutoNegotiate', $errors);
+
+        return $errors;
     }
 
     public function getPortSpeed(): int

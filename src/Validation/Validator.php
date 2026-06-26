@@ -226,11 +226,7 @@ class Validator
             }
 
             try {
-                $result = match ((new \ReflectionMethod($item, 'validate'))->getNumberOfParameters()) {
-                    0 => $item->validate(),
-                    1 => $item->validate($errors),
-                    default => throw new \RuntimeException("Unexpected validate() signature."),
-                };
+                $result = $item->validate();
 
                 if (is_array($result)) {
                     $errors = array_merge($errors, $result);
@@ -474,7 +470,7 @@ class Validator
         foreach ($items as $i => $item) {
             $count++;
             if (method_exists($item, 'validate')) {
-                $item->validate($errors);
+                $errors = array_merge($errors, $item->validate());
             } else {
                 $errors[] = self::formatFieldError("$fieldName[$i]", 'does not support validation.');
             }
