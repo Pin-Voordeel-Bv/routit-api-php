@@ -30,7 +30,7 @@ final class LineDiagnoseRequest extends AbstractRoutITRequest implements RoutITR
         Validator::assertRequiredFieldsPresent($this, ['orderId'], $errors);
 
         Validator::assertEnumValue(
-            $this->symptomCode ?? '',
+            $this->symptomCode ?? null,
             ['Sym103', 'Sym104', 'Sym105', 'Sym111'],
             'SymptomCode',
             $errors

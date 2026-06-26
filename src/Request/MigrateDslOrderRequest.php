@@ -27,10 +27,11 @@ final class MigrateDslOrderRequest extends AbstractRoutITRequest implements Rout
     {
         $errors = [];
 
-        Validator::assertRequiredFieldsPresent($this, [], $errors); // No required top-level fields
+        // @TODO: can be removed
+        // Validator::assertRequiredFieldsPresent($this, [], $errors); // No required top-level fields
 
         // Validate nested DSL order if provided
-        Validator::validateOptionalNested($this->dslOrderRequest ?? null, 'dslOrderRequest', $errors);
+        Validator::validateOptionalNested($this->dslOrderRequest ?? null, 'dslOrderRequest', $errors, false);
 
         // Validate migrateSubnet if provided
         Validator::validateOptionalNested($this->migrateSubnet ?? null, 'migrateSubnet', $errors);

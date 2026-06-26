@@ -36,7 +36,7 @@ final class UpgradeOrderRequest extends AbstractRoutITRequest implements RoutITR
 
         Validator::assertInitializedStringLength($this, 'productId', 1, 13, $errors);
 
-        Validator::assertOptionalDateString($this->upgradeWishDate, 'upgradeWishDate', $errors);
+        Validator::assertOptionalDateString($this, 'upgradeWishDate', $errors);
 
         Validator::throwIfErrors($errors);
     }

@@ -53,10 +53,14 @@ final class Subnet
             $errors[] = "CIDR must be one of: " . implode(', ', $allowedCidrs) . ". Given: {$this->cidr}";
         }
 
-        Validator::assertEnumValue($this->subnetType, ['Unknown', 'Primary', 'Secondary', 'StaticRoute'], 'SubnetType', $errors);
-
-        Validator::assertOptionalEnumValue($this->ipVersion, ['IPv4', 'IPv6'], 'IPVersion', $errors);
-        Validator::assertOptionalEnumValue($this->subnetPriority, ['P90', 'P100', 'P110'], 'SubnetPriority', $errors);
+        Validator::assertEnumValue(
+            $this->subnetType ?? null,
+            ['Unknown', 'Primary', 'Secondary', 'StaticRoute'],
+            'SubnetType',
+            $errors
+        );
+        Validator::assertOptionalEnumValue($this, 'ipVersion', ['IPv4', 'IPv6'], $errors);
+        Validator::assertOptionalEnumValue($this, 'subnetPriority', ['P90', 'P100', 'P110'], $errors);
 
         return $errors;
     }

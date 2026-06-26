@@ -37,7 +37,7 @@ final class ModifySubnetRequestData
         Validator::assertInitializedInt($this, 'cidr', $errors);
         Validator::assertOptionalStringLength($this->ipAddress ?? null, null, 255, 'IPAddress', $errors);
         Validator::assertRequiredEnum($this->subnetType ?? null, ['Primary', 'Secondary', 'StaticRoute'], 'SubnetType', $errors);
-        Validator::assertOptionalEnumValue($this->subnetPriority ?? null, ['P90', 'P100', 'P110'], 'SubnetPriority', $errors);
+        Validator::assertOptionalEnumValue($this, 'subnetPriority', ['P90', 'P100', 'P110'], $errors);
 
         return $errors;
     }

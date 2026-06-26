@@ -37,7 +37,7 @@ final class TerminateOrderRequest extends AbstractRoutITRequest implements RoutI
             $errors
         );
 
-        Validator::assertOptionalDateString($this->desiredTerminateDate, 'DesiredTerminateDate', $errors);
+        Validator::assertOptionalDateString($this, 'desiredTerminateDate', $errors);
 
         Validator::throwIfErrors($errors);
     }

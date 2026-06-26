@@ -15,7 +15,7 @@ final class NetworkInformation
 
     public function validate(array &$errors): void
     {
-        Validator::assertOptionalEnumValue($this->countryNet ?? null, ['A', 'B'], 'CountryNet', $errors);
+        Validator::assertOptionalEnumValue($this, 'countryNet', ['A', 'B'], $errors);
         Validator::assertOptionalInt($this, 'segregateVlanOrderId', 'SegregateVlanOrderId', $errors);
     }
 

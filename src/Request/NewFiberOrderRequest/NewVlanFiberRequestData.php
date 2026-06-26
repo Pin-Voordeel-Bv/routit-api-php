@@ -35,7 +35,8 @@ final class NewVlanFiberRequestData
     {
         $errors = [];
 
-        Validator::assertIterable($this->subnets, 'subnets', $errors);
+        // @TODO: remove because it is redundant
+        // Validator::assertIterable($this->subnets, 'subnets', $errors);
         Validator::validateEach($this->subnets, 'subnets', $errors);
 
         return $errors;

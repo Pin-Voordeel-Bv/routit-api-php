@@ -24,6 +24,8 @@ final class ModifyVlanFiberRequest extends AbstractRoutITRequest implements Rout
     {
         $errors = [];
 
+        Validator::assertRequiredFieldsPresent($this, ['orderId'], $errors);
+
         Validator::assertInitializedInt($this, 'orderId', $errors);
         Validator::validateOptionalNested($this->modifyVlanFiberRequestData ?? null, 'modifyVlanFiberRequestData', $errors);
 

@@ -22,6 +22,8 @@ final class ModifyPortInformation
     {
         $errors = [];
 
+        // @TODO: is there assertRequiredFieldsPresent needed?
+
         Validator::assertInitializedInt($this, 'portSpeed', $errors);
         Validator::assertRequiredEnum($this->connectionSpeedUnit ?? null, ['Mbps', 'Gbps', 'Kbps'], 'ConnectionSpeedUnit', $errors);
         Validator::assertInitializedBoolean($this, 'autoNegotiate', $errors);

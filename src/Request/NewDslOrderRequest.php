@@ -168,7 +168,8 @@ final class NewDslOrderRequest extends AbstractRoutITRequest implements RoutITRe
         Validator::assertOptionalStringLength($this->ontSerialNumber, null, 16, 'OntSerialNumber', $errors);
         Validator::assertOptionalStringLength($this->serviceGroup, null, 20, 'ServiceGroup', $errors);
 
-        Validator::assertIterable($this->channels, 'channels', $errors);
+        // @TODO: remove because it is redundant
+        // Validator::assertIterable($this->channels, 'channels', $errors);
         Validator::validateEach($this->channels, 'channels', $errors);
 
         if ($asRoot) {

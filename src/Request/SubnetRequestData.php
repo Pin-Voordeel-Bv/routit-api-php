@@ -26,8 +26,13 @@ final class SubnetRequestData
         Validator::assertRequiredFieldsPresent($this, ['cidr', 'subnetType'], $errors);
 
         Validator::assertOptionalStringLength($this->ipAddress, null, 255, 'IpAddress', $errors);
-        Validator::assertEnumValue($this->subnetType, ['Primary', 'Secondary', 'StaticRoute'], 'SubnetType', $errors);
-        Validator::assertOptionalEnumValue($this->subnetPriority ?? null, ['P90', 'P100', 'P110'], 'SubnetPriority', $errors);
+        Validator::assertEnumValue(
+            $this->subnetType ?? null,
+            ['Primary', 'Secondary', 'StaticRoute'],
+            'SubnetType',
+            $errors
+        );
+        Validator::assertOptionalEnumValue($this, 'subnetPriority', ['P90', 'P100', 'P110'], $errors);
 
         if (!is_int($this->cidr)) {
             $errors[] = "CIDR must be an integer.";

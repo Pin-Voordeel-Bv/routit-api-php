@@ -35,10 +35,13 @@ final class SubnetRequestData
         }
 
         Validator::assertOptionalStringLength($this->ipAddress, null, 255, 'IPAddress', $errors);
-
-        Validator::assertEnumValue($this->subnetType, ['Unknown', 'Primary', 'Secondary', 'StaticRoute'], 'SubnetType', $errors);
-
-        Validator::assertOptionalEnumValue($this->subnetPriority, ['P90', 'P100', 'P110'], 'SubnetPriority', $errors);
+        Validator::assertEnumValue(
+            $this->subnetType ?? null,
+            ['Unknown', 'Primary', 'Secondary', 'StaticRoute'],
+            'SubnetType',
+            $errors
+        );
+        Validator::assertOptionalEnumValue($this, 'subnetPriority', ['P90', 'P100', 'P110'], $errors);
 
         return $errors;
     }

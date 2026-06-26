@@ -22,8 +22,18 @@ final class PortInformation
     public function validate(array &$errors): void
     {
         Validator::assertInitializedInt($this, 'portSpeed', 'PortSpeed', $errors);
-        Validator::assertEnumValue($this->connectionSpeedUnit, ['Mbps', 'Gbps', 'Kbps'], 'ConnectionSpeedUnit', $errors);
-        Validator::assertEnumValue($this->interfaceType, ['Electric', 'OpticalMM', 'OpticalSM'], 'InterfaceType', $errors);
+        Validator::assertEnumValue(
+            $this->connectionSpeedUnit ?? null,
+            ['Mbps', 'Gbps', 'Kbps'],
+            'ConnectionSpeedUnit',
+            $errors
+        );
+        Validator::assertEnumValue(
+            $this->interfaceType ?? null,
+            ['Electric', 'OpticalMM', 'OpticalSM'],
+            'InterfaceType',
+            $errors
+        );
         Validator::assertOptionalBoolean($this, 'autoNegotiate', 'AutoNegotiate', $errors);
     }
 
