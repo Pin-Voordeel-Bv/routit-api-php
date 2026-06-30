@@ -1,6 +1,6 @@
 <?php
 
-namespace Inserve\RoutITAPI\Response;
+namespace Inserve\RoutITAPI\Response\NewDslOrderDeclined;
 
 use Inserve\RoutITAPI\Response\ArrayOfString;
 use Symfony\Component\Serializer\Attribute\SerializedName;

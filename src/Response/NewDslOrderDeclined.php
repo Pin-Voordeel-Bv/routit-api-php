@@ -3,6 +3,7 @@
 namespace Inserve\RoutITAPI\Response;
 
 use Inserve\RoutITAPI\Header;
+use Inserve\RoutITAPI\Response\NewDslOrderDeclined\NewDslOrderDeclinedState;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 final class NewDslOrderDeclined
